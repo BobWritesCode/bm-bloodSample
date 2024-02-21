@@ -6,3 +6,74 @@
 body {
   display: none;
 }
+
+body,
+html {
+  background: rgba(0, 0, 0, 0);
+  color: rgb(57, 57, 57);
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus,
+div:focus,
+label:focus,
+div.form-control:focus,
+label.form-control:focus,
+input.form-control:focus,
+select.form-control:focus,
+textarea.form-control:focus,
+button.form-control:focus,
+button:checked,
+button:active,
+button:visited {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+#appContainer {
+  display: none;
+  background: rgba(151, 151, 151, 0.303);
+  font-weight: 550;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+#main::-webkit-scrollbar {
+  display: none;
+}
+
+#main {
+  background-color: rgb(36, 56, 63);
+  color: #e2e2e2;
+  border-radius: 30px;
+  border: solid 15px black;
+  outline: 3px solid #e2e2e2;
+  overflow: auto;
+  width: 80%;
+  height: 80%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#page-1 {
+  display: block;
+}
+
+#page-2 {
+  display: none;
+}
+
+#bloodSampleContainer {
+  display: flex;
+}
+
+#bloodSampleContainer label {
+  border-style: solid;
+  border-width: 1px;
+  border-color: aqua;
+}

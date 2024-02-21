@@ -1,0 +1,315 @@
+let isUIOpen = false;
+let isGamePlaying = false;
+let isWaitingInput = false;
+let currentKeyToPress = 0;
+let intSelectedSamples = 0;
+let intStepsRequired = 0;
+let intScore = 0;
+const PAGES = ['page-1', 'page-2'];
+const BASE_STEPS_REQ = 10;
+let arrSelectedSamples = {};
+let intPrimarySample;
+
+const ARROW_ICONS = {
+  down: {
+    icon: $(`<i class="bi bi-arrow-down-square"></i>`),
+    key: 40,
+  },
+  up: {
+    icon: $(`<i class="bi bi-arrow-up-square"></i>`),
+    key: 38,
+  },
+  left: {
+    icon: $(`<i class="bi bi-arrow-left-square"></i>`),
+    key: 37,
+  },
+  right: {
+    icon: $(`<i class="bi bi-arrow-right-square"></i>`),
+    key: 39,
+  },
+};
+
+// Arrow Up: 38
+// Arrow Down: 40
+// Arrow Left: 37
+// Arrow Right: 39
+
+window.addEventListener('DOMContentLoaded', function () {
+  $.post('https://bm-bloodsample/nuiReady', JSON.stringify({}));
+});
+
+window.addEventListener(
+  'load',
+  function () {
+    const forms = $('form');
+    const validation = Array.prototype.filter.call(forms, function (form) {
+      form.addEventListener(
+        'submit',
+        function (event) {
+          event.preventDefault();
+          if (form.checkValidity() === false) {
+            event.stopPropagation();
+          } else {
+            switch (form.id) {
+              case 'form-bloodSampleContainer':
+                openPage('page-2');
+                break;
+              default:
+                break;
+            }
+          }
+          form.classList.add('was-validated');
+        },
+        false,
+      );
+    });
+  },
+  false,
+);
+
+document.onreadystatechange = () => {
+  if (document.readyState === 'complete') {
+    window.addEventListener('message', function (e) {
+      switch (e.data.action) {
+        case 'openUI':
+          OpenUI();
+          arrSelectedSamples = {};
+          break;
+        case 'closeUI':
+          CloseUI();
+          arrSelectedSamples = {};
+          break;
+        case 'provideBloodSamplesOnPerson':
+          showPlayerBloodSamples(e.data.bloodSamples);
+        default:
+          break;
+      }
+    });
+  }
+};
+
+$(document).on('keydown', function (e) {
+  if (isUIOpen) {
+    switch (e.keyCode) {
+      case 27: // 27 = ESC
+        CloseUI();
+        break;
+    }
+  }
+  if (isGamePlaying && isWaitingInput) {
+    isWaitingInput = false;
+    if (e.keyCode == currentKeyToPress) {
+      $('#mini-game').css('color', 'green');
+      intScore++;
+    } else {
+      $('#mini-game').css('color', 'red');
+      intScore--;
+    }
+  }
+});
+
+function OpenUI() {
+  if (!isUIOpen) {
+    isUIOpen = true;
+    $('#main').css('display', 'block');
+    $('#appContainer').css('display', 'block');
+    $('body').css('display', 'block');
+  }
+}
+
+function CloseUI() {
+  if (isUIOpen) {
+    isUIOpen = false;
+    $('#main').css('display', 'none');
+    $('#appContainer').css('display', 'none');
+    $('body').css('display', 'none');
+    $.post('https://bm-bloodsample/closeUI', JSON.stringify({}));
+  }
+}
+
+function StartMiniGame() {
+  if(isGamePlaying) {return}
+  $('#btnStartMiniGame').prop('disabled', true);
+  isGamePlaying = true;
+  let _x = 3;
+  let _i = 0;
+  let _y = intSelectedSamples;
+  let _z = intStepsRequired;
+  intScore = 0;
+  $('.samplesSelected').text(`${_y}`);
+  $('.stepsRequired').text(`${_z}`);
+  $('#mini-game-progress-bar').css('width', '0');
+  $('#results-of-mini-game').empty();
+
+  const countDown = setInterval(() => {
+    $('#mini-game').text(`${_x}`);
+    _x--;
+    if (_x === 0) {
+      clearInterval(countDown);
+      $('#mini-game').text(`Go!`);
+      const startGame = setInterval(() => {
+        const _r = Math.floor(Math.random() * Object.keys(ARROW_ICONS).length);
+        const randomArrow = Object.values(ARROW_ICONS)[_r].icon;
+        $('#mini-game').html(randomArrow);
+        currentKeyToPress = Object.values(ARROW_ICONS)[_r].key;
+        $('#mini-game').css('color', 'white');
+        isWaitingInput = true;
+        _i++;
+        $('#mini-game-progress-bar').css('width', `${(_i / _z) * 100}%`);
+        if (_i === _z) {
+          clearInterval(startGame);
+          $('#mini-game').empty();
+          isGamePlaying = false;
+          showResults();
+        }
+      }, 500);
+    }
+  }, 1000);
+}
+
+
+function ScrambleResult(str) {
+  const _z  = intStepsRequired
+  const result = [...str]
+    .map((el) => {
+      const rand = Math.floor(Math.random() * 100);
+      return rand <= (intScore / _z) * 100 ? el : '_';
+    })
+    .join('');
+  return result;
+}
+
+function getMatchPercentage (_targetSampleStr, _newBloodID) {
+  let min_length = Math.min(_targetSampleStr.length, _newBloodID.length);
+  let max_length = Math.min(_targetSampleStr.length, _newBloodID.length);
+  let matches = 0;
+    for (let i = 0; i < min_length; i++) {
+      if (_targetSampleStr[i] === _newBloodID[i] && (_targetSampleStr[i] != "_" || _newBloodID[i] != "_")) {
+        matches++;
+      }
+    }
+  return (matches/max_length)*100
+}
+
+function showResults(_targetSampleID) {
+  // Clear DIV
+  $('#results-of-mini-game').empty();
+  let _targetSampleStr;
+
+  if (_targetSampleID) {
+    _targetSampleStr = arrSelectedSamples[_targetSampleID].info.bloodId;
+  }
+
+  Object.keys(arrSelectedSamples).forEach((k) => {
+
+    const _currentID = arrSelectedSamples[k].info.id;
+    let _strToShow;
+    let matchPercentage;
+
+    if (!_targetSampleID) {
+      _strToShow = ScrambleResult(arrSelectedSamples[k].info.bloodId);
+      arrSelectedSamples[k].info.bloodId = _strToShow
+    } else {
+      _strToShow = arrSelectedSamples[k].info.bloodId
+    }
+
+    if (_targetSampleID && _currentID == _targetSampleID) {
+      _strToShow = _targetSampleStr;
+    }
+
+    if (_targetSampleID && _currentID != _targetSampleID) {
+      matchPercentage = getMatchPercentage (_targetSampleStr, _strToShow)
+    }
+
+    let conditionallyRenderedPart = '';
+
+    if(_targetSampleID) {
+      conditionallyRenderedPart =`<p class="mb-1">Match: <span class="fw-normal">${Number(matchPercentage).toFixed(2)}</span>%</p>`
+    }
+
+    if (_targetSampleID && _currentID == _targetSampleID) {
+      conditionallyRenderedPart =`<p class="mb-1">  <span class="fw-normal">PRIMARY</span></p>`
+    }
+
+    const element = arrSelectedSamples[k];
+    const el = $(`
+      <input type="radio" class="btn-check" name="options-outlined" id="result-bs-${element.info.id}" autocomplete="off">
+      <label class="btn btn-outline-success me-2 mb-2 text-light" for="result-bs-${element.info.id}">
+        <p class="fw-bold mb-0">ID: <span class="fw-normal">${element.info.id}</span></p>
+        <p class="fw-bold mb-0">Source: <span class="fw-normal">${element.info.source}</span></p>
+        <p class="fw-bold mb-0">Quality: <span class="fw-normal">${element.info.quality}</span></p>
+        <p class="fw-bold mb-0">BloodType: <span class="fw-normal">${element.info.bloodType}</span></p>
+        <p class="fw-bold mb-0">Source: <span class="fw-normal">${element.info.source}</span></p>
+        <p class="fw-bold mb-0">Location: <span class="fw-normal">${element.info.location}</span></p>
+        <p class="fw-bold mb-0">Date Time: <span class="fw-normal">${element.info.datetime}</span></p>
+        <p class="fw-bold mb-0">Notes: <span class="fw-normal">${element.info.notes}</span></p>
+        <p class="mb-1">Result: <span class="fw-normal">${_strToShow}</span></p>
+        ${conditionallyRenderedPart}
+      </label>
+    `);
+    if (element.info.id == _targetSampleID) {
+      el.prop('checked', true);
+    }
+    $('#results-of-mini-game').append(el);
+    el.on('change', function (e) {
+      if (el.prop('checked')) {
+        intPrimarySample = element.info.id;
+        showResults(element.info.id);
+      }
+    });
+  });
+}
+
+
+function openPage(pageToOpen) {
+  PAGES.forEach((el) => {
+    const boolX = el == pageToOpen ? 'block' : 'none';
+    $(`#${el}`).css('display', boolX);
+  });
+}
+
+function updateSelectedSamplesCount(boolX) {
+  boolX ? intSelectedSamples++ : intSelectedSamples--;
+  $('.samplesSelected').text(intSelectedSamples);
+  updateStepsRequired(intSelectedSamples);
+  $('.stepsRequired').text(intStepsRequired);
+}
+
+function updateStepsRequired(intX) {
+  intStepsRequired = intX > 0 ? BASE_STEPS_REQ + 1 * intX : 0;
+}
+
+function showPlayerBloodSamples(objBloodSamples) {
+  const c = $('#bloodSampleContainer');
+  c.empty();
+  let i = 0;
+  objBloodSamples.forEach((bs) => {
+    const el = $(`
+      <input type="checkbox" class="btn-check" name="options-outlined" id="bs-${i}" autocomplete="off">
+      <label class="btn btn-outline-success me-2 mb-2 text-light" for="bs-${i}">
+        <p class="fw-bold mb-0">ID: <span class="fw-normal">${bs.info.id}</span></p>
+        <p class="fw-bold mb-0">Source: <span class="fw-normal">${bs.info.source}</span></p>
+        <p class="fw-bold mb-0">Quality: <span class="fw-normal">${bs.info.quality}</span></p>
+        <p class="fw-bold mb-0">BloodType: <span class="fw-normal">${bs.info.bloodType}</span></p>
+        <p class="fw-bold mb-0">Location: <span class="fw-normal">${bs.info.location}</span></p>
+        <p class="fw-bold mb-0">Date Time: <span class="fw-normal">${bs.info.datetime}</span></p>
+        <p class="fw-bold mb-0">Notes: <span class="fw-normal">${bs.info.notes}</span></p>
+      </label>`);
+    c.append(el);
+    el.on('change', function (e) {
+      if (el.prop('checked')) {
+        updateSelectedSamplesCount(true);
+        arrSelectedSamples[bs.info.id] = bs;
+      } else {
+        updateSelectedSamplesCount(false);
+        delete arrSelectedSamples[bs.info.id];
+      }
+    });
+
+    i++;
+  });
+}
+
+function CreateReport() {
+
+}
