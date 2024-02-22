@@ -135,7 +135,7 @@ function StartMiniGame() {
   $('#btnPrintReport').prop('disabled', true);
   $('#btnStartMiniGame').prop('disabled', true);
   isGamePlaying = true;
-  let _x = 3;
+  let _countdown = 3;
   let _i = 0;
   let _y = intSelectedSamples;
   let _z = intStepsRequired;
@@ -151,9 +151,9 @@ function StartMiniGame() {
   );
 
   const countDown = setInterval(() => {
-    $('#mini-game').text(`${_x}`);
-    _x--;
-    if (_x === 0) {
+    $('#mini-game').text(`${_countdown}`);
+    _countdown--;
+    if (_countdown === 0) {
       clearInterval(countDown);
       $('#mini-game').text(`Go!`);
       const startGame = setInterval(() => {
@@ -227,7 +227,7 @@ function showResults(_targetSampleID) {
 
     if (_targetSampleID && _currentID == _targetSampleID) {
       _strToShow = _targetSampleStr;
-      arrSelectedSamples[k].info.matchPercent = "PRIMARY"
+      arrSelectedSamples[k].info.matchPercent = 'PRIMARY';
     }
 
     if (_targetSampleID && _currentID != _targetSampleID) {
@@ -325,7 +325,7 @@ function showPlayerBloodSamples(objBloodSamples) {
 }
 
 function ShowReport() {
-  createNewReport()
+  createNewReport();
   $('#main').css('display', 'none');
   $('#report').css('display', 'block');
   const resultsContainer = $('#report-results-container-others');
@@ -335,16 +335,17 @@ function ShowReport() {
   $('#report-report-id').html(`
     <h3>Report ID: ${'1'}</h3>
     <hr/>
-  `)
+  `);
 
   Object.keys(arrSelectedSamples).forEach((k) => {
-    const bs = arrSelectedSamples[k].info
-
+    const bs = arrSelectedSamples[k].info;
 
     const conditionallyRenderedPart =
       bs.matchPercent == 'PRIMARY'
         ? `<p class="mb-1">  <span class="fw-normal">PRIMARY</span></p>`
-        : `<p class="mb-1">Match: <span class="fw-normal">${Number(bs.matchPercent,).toFixed(2)}</span>%</p>`;
+        : `<p class="mb-1">Match: <span class="fw-normal">${Number(
+            bs.matchPercent,
+          ).toFixed(2)}</span>%</p>`;
 
     resultsContainer.append(`
       <div class='d-flex justify-content-between pt-1'>
@@ -362,5 +363,7 @@ function ShowReport() {
       </div>
       <hr/>
     `);
-  })
+  });
+}
+
 }
