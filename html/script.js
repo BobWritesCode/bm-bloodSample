@@ -128,7 +128,10 @@ function CloseUI() {
 }
 
 function StartMiniGame() {
-  if(isGamePlaying) {return}
+  if (isGamePlaying) {
+    return;
+  }
+  $('#btnPrintReport').prop('disabled', true);
   $('#btnStartMiniGame').prop('disabled', true);
   isGamePlaying = true;
   let _x = 3;
@@ -161,15 +164,16 @@ function StartMiniGame() {
           $('#mini-game').empty();
           isGamePlaying = false;
           showResults();
+          $('#btnPrintReport').prop('disabled', false);
+          $('#results-of-mini-game-container').css('display', 'flex');
         }
       }, 500);
     }
   }, 1000);
 }
 
-
 function ScrambleResult(str) {
-  const _z  = intStepsRequired
+  const _z = intStepsRequired;
   const result = [...str]
     .map((el) => {
       const rand = Math.floor(Math.random() * 100);
@@ -179,16 +183,19 @@ function ScrambleResult(str) {
   return result;
 }
 
-function getMatchPercentage (_targetSampleStr, _newBloodID) {
+function getMatchPercentage(_targetSampleStr, _newBloodID) {
   let min_length = Math.min(_targetSampleStr.length, _newBloodID.length);
   let max_length = Math.min(_targetSampleStr.length, _newBloodID.length);
   let matches = 0;
-    for (let i = 0; i < min_length; i++) {
-      if (_targetSampleStr[i] === _newBloodID[i] && (_targetSampleStr[i] != "_" || _newBloodID[i] != "_")) {
-        matches++;
-      }
+  for (let i = 0; i < min_length; i++) {
+    if (
+      _targetSampleStr[i] === _newBloodID[i] &&
+      (_targetSampleStr[i] != '_' || _newBloodID[i] != '_')
+    ) {
+      matches++;
     }
-  return (matches/max_length)*100
+  }
+  return (matches / max_length) * 100;
 }
 
 function showResults(_targetSampleID) {
@@ -201,34 +208,37 @@ function showResults(_targetSampleID) {
   }
 
   Object.keys(arrSelectedSamples).forEach((k) => {
-
     const _currentID = arrSelectedSamples[k].info.id;
     let _strToShow;
     let matchPercentage;
 
     if (!_targetSampleID) {
       _strToShow = ScrambleResult(arrSelectedSamples[k].info.bloodId);
-      arrSelectedSamples[k].info.bloodId = _strToShow
+      arrSelectedSamples[k].info.bloodId = _strToShow;
     } else {
-      _strToShow = arrSelectedSamples[k].info.bloodId
+      _strToShow = arrSelectedSamples[k].info.bloodId;
     }
 
     if (_targetSampleID && _currentID == _targetSampleID) {
       _strToShow = _targetSampleStr;
+      arrSelectedSamples[k].info.matchPercent = "PRIMARY"
     }
 
     if (_targetSampleID && _currentID != _targetSampleID) {
-      matchPercentage = getMatchPercentage (_targetSampleStr, _strToShow)
+      matchPercentage = getMatchPercentage(_targetSampleStr, _strToShow);
+      arrSelectedSamples[k].info.matchPercent = matchPercentage;
     }
 
     let conditionallyRenderedPart = '';
 
-    if(_targetSampleID) {
-      conditionallyRenderedPart =`<p class="mb-1">Match: <span class="fw-normal">${Number(matchPercentage).toFixed(2)}</span>%</p>`
+    if (_targetSampleID) {
+      conditionallyRenderedPart = `<p class="mb-1">Match: <span class="fw-normal">${Number(
+        matchPercentage,
+      ).toFixed(2)}</span>%</p>`;
     }
 
     if (_targetSampleID && _currentID == _targetSampleID) {
-      conditionallyRenderedPart =`<p class="mb-1">  <span class="fw-normal">PRIMARY</span></p>`
+      conditionallyRenderedPart = `<p class="mb-1">  <span class="fw-normal">PRIMARY</span></p>`;
     }
 
     const element = arrSelectedSamples[k];
@@ -259,7 +269,6 @@ function showResults(_targetSampleID) {
     });
   });
 }
-
 
 function openPage(pageToOpen) {
   PAGES.forEach((el) => {
@@ -305,11 +314,46 @@ function showPlayerBloodSamples(objBloodSamples) {
         delete arrSelectedSamples[bs.info.id];
       }
     });
-
     i++;
   });
 }
 
-function CreateReport() {
+function ShowReport() {
+  $('#main').css('display', 'none')
+  $('#report').css('display', 'block')
+  const resultsContainer = $('#report-results-container-others');
+  console.log(arrSelectedSamples);
+  console.log(arrSelectedSamples.length);
 
+  $('#report-report-id').html(`
+    <h3>Report ID: ${'1'}</h3>
+    <hr/>
+  `)
+
+  Object.keys(arrSelectedSamples).forEach((k) => {
+    const bs = arrSelectedSamples[k].info
+
+
+    const conditionallyRenderedPart =
+      bs.matchPercent == 'PRIMARY'
+        ? `<p class="mb-1">  <span class="fw-normal">PRIMARY</span></p>`
+        : `<p class="mb-1">Match: <span class="fw-normal">${Number(bs.matchPercent,).toFixed(2)}</span>%</p>`;
+
+    resultsContainer.append(`
+      <div class='d-flex justify-content-between pt-1'>
+        <h3>Sample ID: ${bs.id}</h3>
+        <h3>${conditionallyRenderedPart}</h3>
+      </div>
+      <div>
+        <p class="fw-bold mb-0">Source: <span class="fw-normal">${bs.source}</span></p>
+        <p class="fw-bold mb-0">Quality: <span class="fw-normal">${bs.quality}</span></p>
+        <p class="fw-bold mb-0">bloodId: <span class="fw-normal roboto-mono-400">${bs.bloodId}</span></p>
+        <p class="fw-bold mb-0">BloodType: <span class="fw-normal">${bs.bloodType}</span></p>
+        <p class="fw-bold mb-0">Location: <span class="fw-normal">${bs.location}</span></p>
+        <p class="fw-bold mb-0">Date Time: <span class="fw-normal">${bs.datetime}</span></p>
+        <p class="fw-bold mb-0">Notes: <span class="fw-normal">${bs.notes}</span></p>
+      </div>
+      <hr/>
+    `);
+  })
 }

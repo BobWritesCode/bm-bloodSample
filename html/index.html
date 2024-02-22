@@ -49,15 +49,39 @@
         <p>To process a sample press the start button. You will then need to follow the prompts.</p>
         <p>You have selected <span class='samplesSelected'>0</span> sample(s).</p>
         <p>You you need to complete <span class='stepsRequired'>0</span> steps(s).</p>
-        <button id="btnStartMiniGame" type="button" class="btn btn-success mb-3" onclick='StartMiniGame()'>Start</button>
-        <div class="progress mb-3" style='width:50%;'>
-          <div id="mini-game-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+        <div class='d-flex flex-column align-items-center'>
+          <button id="btnStartMiniGame" type="button" class="btn btn-success mb-3 "
+            onclick='StartMiniGame()'>Start</button>
+          <div class="progress mb-3" style='width:50%;'>
+            <div id="mini-game-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar" style="width: 0%"></div>
+          </div>
+          <div id='mini-game' class='mb-3 fs-1'></div>
+          <div id='results-of-mini-game-container' class='flex-column align-items-center'>
+            <p>Choose the primary:</p>
+            <div id='results-of-mini-game' class='orm-check flex-wrap mb-3 mb-3'></div>
+            <button id="btnPrintReport" type="button" class="btn btn-success mb-3" onclick='ShowReport()'>Create
+              Report</button>
+          </div>
         </div>
-        <div id='mini-game' class='mb-3 fs-1'></div>
-        <div><p>Choose your primary:</p></div>
-        <div id='results-of-mini-game' class='orm-check flex-wrap mb-3 mb-3'></div>
-        <button id="btnPrintReport" type="button" class="btn btn-success mb-3" onclick='CreateReport()'>Create Report</button>
-
+      </div>
+    </div>
+    <div id='report' class='position-absolute top-50 start-50 translate-middle pt-5 px-5 pb-2'>
+      <h1 class='mb-5'>Los Santos Blood Analytics</h1>
+      <p>To whom this may concerns,</p>
+      <p>Please see the results of the blood analysis below. The below results show a comparison between the primary
+        sample source and the other samples provided.</p>
+      <p>In the blood strings, a '_' indicates unknown, this could of been because of the quality of the sample when
+        analysed and/or the competence of the blood analyser.</p>
+      <p>Regards,</p>
+      <p>Los Santos Blood Analytics Team</p>
+      <hr />
+      <div id='report-report-id'></div>
+      <div id='report-results-container-primary'></div>
+      <div id='report-results-container-others'></div>
+      <div>
+        <p class='fs-6 fw-light text-center'>This is the small text with terms and conditions and basically to say we
+          are not liable, and the only person liable in the person who ran the test.</p>
       </div>
     </div>
   </div>
