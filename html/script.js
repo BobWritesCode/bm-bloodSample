@@ -333,8 +333,6 @@ function ShowReport() {
   $('#main').css('display', 'none');
   $('#report').css('display', 'block');
   const resultsContainer = $('#report-results-container-others');
-  console.log(arrSelectedSamples);
-  console.log(arrSelectedSamples.length);
 
   $('#report-report-id').html(`
     <h3>Report ID: ${'1'}</h3>

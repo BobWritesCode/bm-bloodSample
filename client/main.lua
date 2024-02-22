@@ -75,10 +75,10 @@ end)
 function GetPlayerBloodSamples()
   local Player = QBCore.Functions.GetPlayerData()
   local items = Player.items
-  local bloodSamples ={}
+  local bloodSamples = {}
   for _, item in ipairs(items) do
     if item.name == Config.RequiredItems.BloodSample.Name then
-      table.insert(bloodSamples , item)
+      table.insert(bloodSamples, item)
     end
   end
   SendNUIMessage({
