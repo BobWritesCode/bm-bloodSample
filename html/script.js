@@ -123,6 +123,7 @@ function CloseUI() {
     $('#main').css('display', 'none');
     $('#appContainer').css('display', 'none');
     $('body').css('display', 'none');
+    $('#report').css('display', 'none');
     $.post('https://bm-bloodsample/closeUI', JSON.stringify({}));
   }
 }
@@ -324,8 +325,9 @@ function showPlayerBloodSamples(objBloodSamples) {
 }
 
 function ShowReport() {
-  $('#main').css('display', 'none')
-  $('#report').css('display', 'block')
+  createNewReport()
+  $('#main').css('display', 'none');
+  $('#report').css('display', 'block');
   const resultsContainer = $('#report-results-container-others');
   console.log(arrSelectedSamples);
   console.log(arrSelectedSamples.length);
