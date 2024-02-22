@@ -53,6 +53,15 @@ RegisterNUICallback('closeUI', function(_, cb)
   SetNuiFocus(false, false)
 end)
 
+RegisterNUICallback('removeSamplesFromPlayer', function(data, cb)
+  local slotsToRemove = {}
+  for _, value in pairs(data.arrSelectedSamples) do
+    table.insert(slotsToRemove, value.slot)
+  end
+  TriggerServerEvent('bm-bloodEvidence:server:main:removeSamplesFromPlayer', slotsToRemove)
+end)
+
+
 
 function GetPlayerBloodSamples()
   local Player = QBCore.Functions.GetPlayerData()

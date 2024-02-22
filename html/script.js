@@ -144,6 +144,11 @@ function StartMiniGame() {
   $('#mini-game-progress-bar').css('width', '0');
   $('#results-of-mini-game').empty();
 
+  $.post(
+    'https://bm-bloodsample/removeSamplesFromPlayer',
+    JSON.stringify({ arrSelectedSamples }),
+  );
+
   const countDown = setInterval(() => {
     $('#mini-game').text(`${_x}`);
     _x--;
