@@ -81,6 +81,10 @@ document.onreadystatechange = () => {
           break;
         case 'provideBloodSamplesOnPerson':
           showPlayerBloodSamples(e.data.bloodSamples);
+          break;
+        case 'createNewReportResponse':
+          createNewReportResponse(e.data.id);
+          break;
         default:
           break;
       }
@@ -366,4 +370,13 @@ function ShowReport() {
   });
 }
 
+function createNewReport() {
+  $.post(
+    'https://bm-bloodsample/createNewReport',
+    JSON.stringify({ arrSelectedSamples }),
+  );
+}
+
+function createNewReportResponse(id) {
+  console.log(id);
 }

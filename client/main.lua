@@ -61,6 +61,15 @@ RegisterNUICallback('removeSamplesFromPlayer', function(data, cb)
   TriggerServerEvent('bm-bloodEvidence:server:main:removeSamplesFromPlayer', slotsToRemove)
 end)
 
+RegisterNUICallback('createNewReport', function(data, cb)
+  QBCore.Functions.TriggerCallback('bm-bloodEvidence:server:createNewReport', function(responseCode, id)
+    SendNUIMessage({
+      action = 'createNewReportResponse',
+      responseCode = responseCode,
+      id = id,
+    })
+  end, data.arrSelectedSamples)
+end)
 
 
 function GetPlayerBloodSamples()
