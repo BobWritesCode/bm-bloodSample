@@ -24,7 +24,7 @@ end
 QBCore.Functions.CreateUseableItem('bloodsamplekit', function(source)
   local Player = QBCore.Functions.GetPlayer(source)
   if not Player or not Player.Functions.GetItemByName('bloodsamplekit') then return end
-  TriggerClientEvent('bm-bloodEvidence:client:getBloodSamplyFromPlayer', source)
+  TriggerClientEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', source)
 end)
 
 QBCore.Functions.CreateUseableItem('bloodsamplereport', function(source)
@@ -33,8 +33,9 @@ QBCore.Functions.CreateUseableItem('bloodsamplereport', function(source)
 end)
 
 QBCore.Commands.Add(Config.Commands.GetBloodSample, "Get blood sample from closest player", {}, false, function(source)
-  TriggerClientEvent('bm-bloodEvidence:client:getBloodSamplyFromPlayer', source)
+  TriggerClientEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', source)
 end)
+
 
 local bloodSampleId = 1
 RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', function(targetPlayerId, notes)
@@ -70,16 +71,22 @@ RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', functi
   TriggerClientEvent('bm-bloodEvidence:client:main:provideBloodSample', source, bloodId, bloodType)
 end)
 
-QBCore.Functions.CreateCallback('bm-bloodEvidence:server:main:removeSamplesFromPlayer',
-  function(source, cb, listBloodSamplee)
-    tprint(listBloodSamplee)
+QBCore.Functions.CreateCallback('bm-bloodEvidence:server:main:giveProcessedSample',
+  function(source, cb, slot, bloodId)
     local Player = QBCore.Functions.GetPlayer(source)
-    for index, slot in pairs(listBloodSamplee) do
-      if Player.Functions.RemoveItem(Config.RequiredItems.BloodSample.Name, 1, slot) then
-        TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items
-          [Config.RequiredItems.BloodSample.Name], 'remove')
-        TriggerClientEvent('QBCore:Notify', source, "", 'success')
-      end
+    local itemInfo = Player.PlayerData.items[slot].info
+    itemInfo.bloodId = bloodId
+    itemInfo.processed = true
+    if Player.Functions.RemoveItem(Config.RequiredItems.BloodSample.Name, 1, slot) then
+      if not Player.Functions.AddItem(Config.RequiredItems.BloodSample.Name, 1, false, itemInfo) then return end
+      TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSample.Name],
+        'remove')
+      TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSample.Name],
+        'add')
+    else
+      TriggerClientEvent('QBCore:Notify', source, "", 'error')
+      cb(false)
+      return
     end
     cb(true)
   end)

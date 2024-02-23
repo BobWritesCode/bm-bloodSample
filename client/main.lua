@@ -20,7 +20,7 @@ RegisterNUICallback('nuiReady', function(_, cb)
   NUIReady = true
 end)
 
-RegisterNetEvent('bm-bloodEvidence:client:getBloodSamplyFromPlayer', function()
+RegisterNetEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', function()
   local targetPlayer, distance = QBCore.Functions.GetClosestPlayer()
   if not QBCore.Functions.HasItem(Config.RequiredItems.BloodSampleKit.Name) then
     QBCore.Functions.Notify("You do not have the required item.RegisterNetEvent", 'error')
@@ -53,16 +53,18 @@ RegisterNUICallback('closeUI', function(_, cb)
   SetNuiFocus(false, false)
 end)
 
-RegisterNUICallback('removeSamplesFromPlayer', function(data, cb)
-  local slotsToRemove = {}
-  for _, value in pairs(data.arrSelectedSamples) do
-    table.insert(slotsToRemove, value.slot)
+local isProcessing = false
+RegisterNUICallback('processItem', function(data, cb)
+  while isProcessing do
+    Wait(100)
   end
-  QBCore.Functions.TriggerCallback('bm-bloodEvidence:server:main:removeSamplesFromPlayer', function(isTrue)
+  isProcessing = true
+  QBCore.Functions.TriggerCallback('bm-bloodEvidence:server:main:giveProcessedSample', function(isTrue)
     if isTrue then
       GetPlayerBloodSamples()
+      isProcessing = false
     end
-  end, slotsToRemove)
+  end, data.slot, data.bloodId)
 end)
 
 RegisterNUICallback('createNewReport', function(data, cb)

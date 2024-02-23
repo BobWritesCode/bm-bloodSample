@@ -179,7 +179,11 @@ function StartMiniGame() {
   }, 1000);
 }
 
-function ScrambleResult(str) {
+function ScrambleResult(k) {
+  if (arrSelectedSamples[k].info.processed) {
+    return arrSelectedSamples[k].info.bloodId;
+  }
+  str = arrSelectedSamples[k].info.bloodId;
   const _z = intStepsRequired;
   const result = [...str]
     .map((el) => {
@@ -187,6 +191,8 @@ function ScrambleResult(str) {
       return rand <= (intScore / _z) * 100 ? el : '_';
     })
     .join('');
+  arrSelectedSamples[k].info.processed = true;
+  $.post('https://bm-bloodsample/processItem', JSON.stringify({ slot: arrSelectedSamples[k].slot, bloodId:result }));
   return result;
 }
 
@@ -220,7 +226,7 @@ function showResults(_targetSampleID) {
     let matchPercentage;
 
     if (!_targetSampleID) {
-      _strToShow = ScrambleResult(arrSelectedSamples[k].info.bloodId);
+      _strToShow = ScrambleResult(k);
       arrSelectedSamples[k].info.bloodId = _strToShow;
     } else {
       _strToShow = arrSelectedSamples[k].info.bloodId;
@@ -255,6 +261,7 @@ function showResults(_targetSampleID) {
         <p class="fw-bold mb-0">ID: <span class="fw-normal">${element.info.id}</span></p>
         <p class="fw-bold mb-0">Source: <span class="fw-normal">${element.info.source}</span></p>
         <p class="fw-bold mb-0">Quality: <span class="fw-normal">${element.info.quality}</span></p>
+        <p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">${element.info.bloodId}</span></p>
         <p class="fw-bold mb-0">BloodType: <span class="fw-normal">${element.info.bloodType}</span></p>
         <p class="fw-bold mb-0">Source: <span class="fw-normal">${element.info.source}</span></p>
         <p class="fw-bold mb-0">Location: <span class="fw-normal">${element.info.location}</span></p>
@@ -301,12 +308,21 @@ function showPlayerBloodSamples(objBloodSamples) {
   c.empty();
   let i = 0;
   objBloodSamples.forEach((bs) => {
+    let conditionallyRenderedPart = '';
+
+    if (bs.info.processed) {
+      conditionallyRenderedPart = `<p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">${bs.info.bloodId}</span></p>`;
+    } else {
+      conditionallyRenderedPart = `<p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">???</span></p>`;
+    }
+
     const el = $(`
       <input type="checkbox" class="btn-check" name="options-outlined" id="bs-${i}" autocomplete="off">
       <label class="btn btn-outline-success me-2 mb-2 text-light" for="bs-${i}">
         <p class="fw-bold mb-0">ID: <span class="fw-normal">${bs.info.id}</span></p>
         <p class="fw-bold mb-0">Source: <span class="fw-normal">${bs.info.source}</span></p>
         <p class="fw-bold mb-0">Quality: <span class="fw-normal">${bs.info.quality}</span></p>
+        ${conditionallyRenderedPart}
         <p class="fw-bold mb-0">BloodType: <span class="fw-normal">${bs.info.bloodType}</span></p>
         <p class="fw-bold mb-0">Location: <span class="fw-normal">${bs.info.location}</span></p>
         <p class="fw-bold mb-0">Date Time: <span class="fw-normal">${bs.info.datetime}</span></p>
