@@ -3,39 +3,41 @@
 <head>
   <title></title>
   <!-- Bootstrap icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <!-- Bootstrap JS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
   <!-- JQuery -->
   <script src="jquery-3.7.1.min.js"></script>
   <!-- App JS -->
-  <link rel="stylesheet" href="style.css" type="text/css">
+  <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
-  <div id='appContainer' class='vw-100 vh-100 position-relative text-black'>
-    <div id='main' class='position-absolute top-50 start-50 translate-middle px-3'>
-      <div class='d-flex justify-content-between pt-1'>
+  <div id="appContainer" class="vw-100 vh-100 position-relative text-black">
+    <div id="main" class="position-absolute top-50 start-50 translate-middle px-3">
+      <div class="d-flex justify-content-between pt-1">
         <h1>Blood Analysis</h1>
-        <button type="button" class="btn btn-primary" onclick='openPage("page-1")'><i class="bi bi-house"></i></button>
+        <button type="button" class="btn btn-primary" onclick='openPage("page-1")'>
+          <i class="bi bi-house"></i>
+        </button>
       </div>
       <hr />
-      <div id='page-1'>
-        <form id="form-bloodSampleContainer" class='mb-3'>
+      <div id="page-1">
+        <form id="form-bloodSampleContainer" class="mb-3">
           <h3>Select sample to process:</h3>
           <div id="bloodSampleContainer" class="form-check flex-wrap mb-3"></div>
           <button type="submit" class="btn btn-primary">Process selected sample(s)</button>
         </form>
         <hr />
 
-        <form class='mb-3'>
+        <form class="mb-3">
           <div class="row mb-3">
             <div class="col">
-              <input type="text" class="form-control" placeholder="Blood Sample 1">
+              <input type="text" class="form-control" placeholder="Blood Sample 1" />
             </div>
             <div class="col">
-              <input type="text" class="form-control" placeholder="Blood Sample 2">
+              <input type="text" class="form-control" placeholder="Blood Sample 2" />
             </div>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
@@ -44,24 +46,39 @@
           <h2>Search</h2>
         </div>
       </div>
-      <div id='page-2'>
-        <h2>Processing Sample</h2>
-        <p>To process a sample press the start button. You will then need to follow the prompts.</p>
-        <p>You have selected <span class='samplesSelected'>0</span> sample(s).</p>
-        <p>You you need to complete <span class='stepsRequired'>0</span> steps(s).</p>
-        <div class='d-flex flex-column align-items-center'>
-          <button id="btnStartMiniGame" type="button" class="btn btn-success mb-3 "
-            onclick='StartMiniGame()'>Start</button>
-          <div class="progress mb-3" style='width:50%;'>
-            <div id="mini-game-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
-              role="progressbar" style="width: 0%"></div>
+      <div id="page-2">
+        <div id="mini-game-container" class="flex-column align-items-center w-100">
+          <h2>Processing Sample</h2>
+          <p>
+            To process a sample press the start button. You will then need to follow the prompts.
+          </p>
+          <p>You have selected <span class="samplesSelected">0</span> sample(s).</p>
+          <p>
+            You you need to complete
+            <span class="stepsRequired">0</span> steps(s).
+          </p>
+          <div class="d-flex flex-column align-items-center w-100">
+
+            <button id="btnStartMiniGame" type="button" class="btn btn-success mb-3" onclick="StartMiniGame()">
+              Start
+            </button>
+            <div class="progress mb-3" style="width: 50%">
+              <div id="mini-game-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar" style="width: 0%">
+              </div>
+            </div>
+            <div id="mini-game" class="mb-3 fs-1"></div>
+            <div id="mini-game-results-container" class="flex-column align-items-center">
+              <p>Choose the primary:</p>
+              <div id="mini-game-results" class="orm-check flex-wrap mb-3 mb-3"></div>
+              <button id="btnPrintReport" type="button" class="btn btn-success mb-3" onclick="createNewReport()">
+                Create Report
+              </button>
+            </div>
           </div>
-          <div id='mini-game' class='mb-3 fs-1'></div>
-          <div id='results-of-mini-game-container' class='flex-column align-items-center'>
-            <p>Choose the primary:</p>
-            <div id='results-of-mini-game' class='orm-check flex-wrap mb-3 mb-3'></div>
-            <button id="btnPrintReport" type="button" class="btn btn-success mb-3" onclick='ShowReport()'>Create
-              Report</button>
+          <div id="mini-game-after-create-report-container">
+            <div id="mini-game-after-create-report"></div>
+            <button type="button" class="btn btn-primary" onclick='openPage("page-1")'></button>
           </div>
         </div>
       </div>

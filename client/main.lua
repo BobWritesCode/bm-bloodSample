@@ -75,7 +75,6 @@ RegisterNUICallback('createNewReport', function(data, cb)
   end, data.arrSelectedSamples)
 end)
 
-
 function GetPlayerBloodSamples()
   local Player = QBCore.Functions.GetPlayerData()
   local items = Player.items

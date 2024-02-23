@@ -207,7 +207,7 @@ function getMatchPercentage(_targetSampleStr, _newBloodID) {
 
 function showResults(_targetSampleID) {
   // Clear DIV
-  $('#results-of-mini-game').empty();
+  $('#mini-game-results').empty();
   let _targetSampleStr;
 
   if (_targetSampleID) {

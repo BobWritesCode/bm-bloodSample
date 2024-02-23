@@ -40,8 +40,10 @@ local bloodSampleId = 1
 RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', function(targetPlayerId, notes)
   local Player = QBCore.Functions.GetPlayer(source)
   local targetPlayer = QBCore.Functions.GetPlayer(targetPlayerId)
-  local bloodId = targetPlayer.PlayerData.metadata['fingerprint'] -- We will use fingerprint now, likely set up a blood system.
-  local bloodType = targetPlayer.PlayerData.metadata['bloodtype'] -- We will use fingerprint now, likely set up a blood system.
+  local bloodId = targetPlayer.PlayerData.metadata
+      ['fingerprint'] -- We will use fingerprint now, likely set up a blood system.
+  local bloodType = targetPlayer.PlayerData.metadata
+      ['bloodtype']   -- We will use fingerprint now, likely set up a blood system.
   if DebugMode then print(bloodId) end
   if DebugMode then print(bloodType) end
   if Player.Functions.RemoveItem(Config.RequiredItems.BloodSampleKit.Name, 1) then
@@ -50,7 +52,7 @@ RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', functi
     local info = {
       id = id,
       source = "Sample Kit",
-      label = "Blood sample. ID: "..id..". Blood type: "..bloodType,
+      label = "Blood sample. ID: " .. id .. ". Blood type: " .. bloodType,
       type = 'dna',
       bloodId = bloodId,
       bloodType = bloodType,
@@ -60,7 +62,8 @@ RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', functi
       notes = notes or 'DEFAULT NOTE',
     }
     if not Player.Functions.AddItem(Config.RequiredItems.BloodSample.Name, 1, false, info) then return end
-    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSample.Name], 'add')
+    TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSample.Name],
+      'add')
   else
     TriggerClientEvent('QBCore:Notify', source, "You do not have the correct item (Panda)", 'error')
   end
