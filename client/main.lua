@@ -77,6 +77,16 @@ RegisterNUICallback('createNewReport', function(data, cb)
   end, data.arrSelectedSamples)
 end)
 
+RegisterNUICallback('getReport', function(data, cb)
+  QBCore.Functions.TriggerCallback('bm-bloodEvidence:server:getReport', function(responseCode, _data)
+    SendNUIMessage({
+      action = 'showReport',
+      responseCode = responseCode,
+      report = _data.report,
+    })
+  end, data.reportId)
+end)
+
 function GetPlayerBloodSamples()
   local Player = QBCore.Functions.GetPlayerData()
   local items = Player.items

@@ -55,6 +55,9 @@ window.addEventListener(
                 openPage('page-2');
                 SetUpBloodSamplePage();
                 break;
+              case 'form-retrieveReportById':
+                GetReport(form);
+                break;
               default:
                 break;
             }
@@ -85,6 +88,9 @@ document.onreadystatechange = () => {
           break;
         case 'createNewReportResponse':
           createNewReportResponse(e.data.id);
+          break;
+        case 'showReport':
+          ShowReport(e.data.responseCode, e.data.report);
           break;
         default:
           break;
@@ -131,6 +137,13 @@ function CloseUI() {
     $('#report').css('display', 'none');
     $.post('https://bm-bloodsample/closeUI', JSON.stringify({}));
   }
+}
+
+function GetReport() {
+  $.post(
+    'https://bm-bloodsample/getReport',
+    JSON.stringify({ reportId: $('#inputRetrieveReportById').val() }),
+  );
 }
 
 function StartMiniGame() {
@@ -347,8 +360,8 @@ function showPlayerBloodSamples(objBloodSamples) {
 
 function getReportFromServer(reportID) {}
 
-function ShowReport() {
-  const report = arrSelectedSamples;
+function ShowReport(responseCode, reportData) {
+  const report = JSON.parse(reportData);
   $('#main').css('display', 'none');
   $('#report').css('display', 'block');
   const resultsContainer = $('#report-results-container-others');

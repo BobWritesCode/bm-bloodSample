@@ -104,6 +104,18 @@ QBCore.Functions.CreateCallback('bm-bloodEvidence:server:createNewReport',
       end)
   end)
 
+QBCore.Functions.CreateCallback('bm-bloodEvidence:server:getReport',
+  function(_, cb, reportId)
+    print(reportId)
+    MySQL.single('SELECT * FROM bm_bloodsamples WHERE id = ? LIMIT 1', { reportId },
+      function(result)
+        if result then
+          cb(200, result)
+        end
+        cb(404, {})
+      end)
+  end)
+
 function Tprint(tbl, indent)
   if not indent then indent = 0 end
   for k, v in pairs(tbl) do
