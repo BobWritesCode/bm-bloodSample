@@ -45,8 +45,8 @@ RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', functi
       ['fingerprint'] -- We will use fingerprint now, likely set up a blood system.
   local bloodType = targetPlayer.PlayerData.metadata
       ['bloodtype']   -- We will use fingerprint now, likely set up a blood system.
-  if DebugMode then print(bloodId) end
-  if DebugMode then print(bloodType) end
+  -- if DebugMode then print(bloodId) end
+  -- if DebugMode then print(bloodType) end
   if Player.Functions.RemoveItem(Config.RequiredItems.BloodSampleKit.Name, 1) then
     local id = bloodSampleId
     bloodSampleId = bloodSampleId + 1
@@ -104,13 +104,13 @@ QBCore.Functions.CreateCallback('bm-bloodEvidence:server:createNewReport',
       end)
   end)
 
-function tprint(tbl, indent)
+function Tprint(tbl, indent)
   if not indent then indent = 0 end
   for k, v in pairs(tbl) do
     local formatting = string.rep("  ", indent) .. k .. ": "
     if type(v) == "table" then
       print(formatting)
-      tprint(v, indent + 1)
+      Tprint(v, indent + 1)
     elseif type(v) == 'boolean' then
       print(formatting .. tostring(v))
     else

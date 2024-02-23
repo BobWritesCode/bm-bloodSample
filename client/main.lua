@@ -8,10 +8,10 @@ AddEventHandler('onResourceStart', function(resourceName)
   local i = 0
   while not NUIReady and i < 10 do
     i = i + 1
-    print("(BM-BloodEvidence) Waiting NUI to load. Attempt: " .. i)
+    if (DebugMode) then print("(BM-BloodEvidence) Waiting NUI to load. Attempt: " .. i) end
     Wait(1000)
     if i == 10 then
-      print('(BM-BloodEvidence) Failed to read NUI.')
+      if (DebugMode) then print('(BM-BloodEvidence) Failed to read NUI.') end
     end
   end
 end)
@@ -153,13 +153,13 @@ else
   end)
 end
 
-function tprint(tbl, indent)
+function Tprint(tbl, indent)
   if not indent then indent = 0 end
   for k, v in pairs(tbl) do
     local formatting = string.rep("  ", indent) .. k .. ": "
     if type(v) == "table" then
       print(formatting)
-      tprint(v, indent + 1)
+      Tprint(v, indent + 1)
     elseif type(v) == 'boolean' then
       print(formatting .. tostring(v))
     else
