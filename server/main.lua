@@ -84,7 +84,7 @@ QBCore.Functions.CreateCallback('bm-bloodEvidence:server:main:removeSamplesFromP
 QBCore.Functions.CreateCallback('bm-bloodEvidence:server:createNewReport',
   function(_, cb, reportToSave)
     local jsonReportToSave = json.encode(reportToSave)
-    MySQL.Async.insert("INSERT INTO bm_bloodsamples (report) VALUES (?) ", { {jsonReportToSave} },
+    MySQL.Async.insert("INSERT INTO bm_bloodsamples (report) VALUES (?) ", { { jsonReportToSave } },
       function(id)
         if id then
           cb(200, id)

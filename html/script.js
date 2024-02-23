@@ -172,8 +172,7 @@ function StartMiniGame() {
           $('#mini-game').empty();
           isGamePlaying = false;
           showResults();
-          $('#btnPrintReport').prop('disabled', false);
-          $('#results-of-mini-game-container').css('display', 'flex');
+          $('#mini-game-results-container').css('display', 'flex');
         }
       }, 500);
     }
@@ -268,12 +267,13 @@ function showResults(_targetSampleID) {
     if (element.info.id == _targetSampleID) {
       el.prop('checked', true);
     }
-    $('#results-of-mini-game').append(el);
+    $('#mini-game-results').append(el);
     el.on('change', function (e) {
       if (el.prop('checked')) {
         intPrimarySample = element.info.id;
         showResults(element.info.id);
       }
+      $('#btnPrintReport').prop('disabled', false);
     });
   });
 }
@@ -326,27 +326,25 @@ function showPlayerBloodSamples(objBloodSamples) {
   });
 }
 
+function getReportFromServer(reportID) {}
+
 function ShowReport() {
-  createNewReport();
+  const report = arrSelectedSamples;
   $('#main').css('display', 'none');
   $('#report').css('display', 'block');
   const resultsContainer = $('#report-results-container-others');
-
   $('#report-report-id').html(`
     <h3>Report ID: ${'1'}</h3>
     <hr/>
   `);
-
-  Object.keys(arrSelectedSamples).forEach((k) => {
-    const bs = arrSelectedSamples[k].info;
-
+  Object.keys(report).forEach((k) => {
+    const bs = report[k].info;
     const conditionallyRenderedPart =
       bs.matchPercent == 'PRIMARY'
         ? `<p class="mb-1">  <span class="fw-normal">PRIMARY</span></p>`
-        : `<p class="mb-1">Match: <span class="fw-normal">${Number(
-            bs.matchPercent,
-          ).toFixed(2)}</span>%</p>`;
-
+        : `<p class="mb-1">Match: <span class="fw-normal">${Number(bs.matchPercent).toFixed(
+            2,
+          )}</span>%</p>`;
     resultsContainer.append(`
       <div class='d-flex justify-content-between pt-1'>
         <h3>Sample ID: ${bs.id}</h3>
@@ -367,12 +365,22 @@ function ShowReport() {
 }
 
 function createNewReport() {
-  $.post(
-    'https://bm-bloodsample/createNewReport',
-    JSON.stringify({ arrSelectedSamples }),
-  );
+  $('#btnPrintReport').prop('disabled', true);
+  $.post('https://bm-bloodsample/createNewReport', JSON.stringify({ arrSelectedSamples }));
+  arrSelectedSamples = {};
 }
 
 function createNewReportResponse(id) {
-  console.log(id);
+  console.log(id); // Log the ID to the console.
+
+  const el1 = $('#mini-game-container');
+  const el2 = $('#mini-game-after-create-report');
+
+  el1.css('display', 'none'); // Hide the element with ID 'mini-game-container'
+  $('#mini-game-after-create-report-container').css('display', 'block'); // Show the element with ID 'mini-game-after-create-report'
+
+  el2.empty(); // Clear the content of the element with ID 'mini-game-after-create-report'
+  el2.html(`
+    <p>Your report has been generated. The ID is <span>${id}</span></p>
+  `); // Insert HTML content into the element with ID 'mini-game-after-create-report'
 }

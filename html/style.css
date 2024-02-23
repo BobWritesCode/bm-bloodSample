@@ -16,12 +16,17 @@ body,
 #appContainer,
 #report,
 #page-2,
-#results-of-mini-game-container {
+#mini-game-results-container,
+#mini-game-after-create-report-container {
   display: none;
 }
 
 #page-1 {
   display: block;
+}
+
+#mini-game-container {
+  display: flex;
 }
 
 body,
