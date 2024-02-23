@@ -53,6 +53,7 @@ window.addEventListener(
             switch (form.id) {
               case 'form-bloodSampleContainer':
                 openPage('page-2');
+                SetUpBloodSamplePage();
                 break;
               default:
                 break;
@@ -136,7 +137,7 @@ function StartMiniGame() {
   if (isGamePlaying) {
     return;
   }
-  $('#btnPrintReport').prop('disabled', true);
+  $('#btnCreateReport').prop('disabled', true);
   $('#btnStartMiniGame').prop('disabled', true);
   isGamePlaying = true;
   let _countdown = 3;
@@ -149,8 +150,6 @@ function StartMiniGame() {
   $('#mini-game-progress-bar').css('width', '0');
   $('#mini-game-results').empty();
 
-  console.log(arrSelectedSamples);
-  $.post('https://bm-bloodsample/removeSamplesFromPlayer', JSON.stringify({ arrSelectedSamples }));
 
   const countDown = setInterval(() => {
     $('#mini-game').text(`${_countdown}`);
@@ -280,7 +279,7 @@ function showResults(_targetSampleID) {
         intPrimarySample = element.info.id;
         showResults(element.info.id);
       }
-      $('#btnPrintReport').prop('disabled', false);
+      $('#btnCreateReport').prop('disabled', false);
     });
   });
 }
@@ -381,7 +380,7 @@ function ShowReport() {
 }
 
 function createNewReport() {
-  $('#btnPrintReport').prop('disabled', true);
+  $('#btnCreateReport').prop('disabled', true);
   $.post('https://bm-bloodsample/createNewReport', JSON.stringify({ arrSelectedSamples }));
   arrSelectedSamples = {};
 }
@@ -389,14 +388,20 @@ function createNewReport() {
 function createNewReportResponse(id) {
   console.log(id); // Log the ID to the console.
 
-  const el1 = $('#mini-game-container');
-  const el2 = $('#mini-game-after-create-report');
+  $('#mini-game-container').css('display', 'none'); // Hide the element with ID 'mini-game-container'
 
-  el1.css('display', 'none'); // Hide the element with ID 'mini-game-container'
   $('#mini-game-after-create-report-container').css('display', 'block'); // Show the element with ID 'mini-game-after-create-report'
 
-  el2.empty(); // Clear the content of the element with ID 'mini-game-after-create-report'
-  el2.html(`
+  $('#mini-game-after-create-report').empty(); // Clear the content of the element with ID 'mini-game-after-create-report'
+  $('#mini-game-after-create-report').html(`
     <p>Your report has been generated. The ID is <span>${id}</span></p>
   `); // Insert HTML content into the element with ID 'mini-game-after-create-report'
+}
+
+function SetUpBloodSamplePage() {
+  $('#mini-game-container').css('display', 'flex');
+  $('#mini-game-after-create-report-container').css('display', 'none');
+  $('#btnStartMiniGame').prop('disabled', false);
+  $('#mini-game-results').empty();
+  $('#mini-game-progress-bar').css('width', `0%`);
 }
