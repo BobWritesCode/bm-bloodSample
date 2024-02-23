@@ -58,7 +58,11 @@ RegisterNUICallback('removeSamplesFromPlayer', function(data, cb)
   for _, value in pairs(data.arrSelectedSamples) do
     table.insert(slotsToRemove, value.slot)
   end
-  TriggerServerEvent('bm-bloodEvidence:server:main:removeSamplesFromPlayer', slotsToRemove)
+  QBCore.Functions.TriggerCallback('bm-bloodEvidence:server:main:removeSamplesFromPlayer', function(isTrue)
+    if isTrue then
+      GetPlayerBloodSamples()
+    end
+  end, slotsToRemove)
 end)
 
 RegisterNUICallback('createNewReport', function(data, cb)

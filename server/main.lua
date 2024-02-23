@@ -67,15 +67,19 @@ RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', functi
   TriggerClientEvent('bm-bloodEvidence:client:main:provideBloodSample', source, bloodId, bloodType)
 end)
 
-RegisterNetEvent('bm-bloodEvidence:server:main:removeSamplesFromPlayer', function(listBloodSamplee)
-  local Player = QBCore.Functions.GetPlayer(source)
-  for index, slot in pairs(listBloodSamplee) do
-    if Player.Functions.RemoveItem(Config.RequiredItems.BloodSample.Name, 1, slot) then
-      TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSample.Name], 'remove')
-      TriggerClientEvent('QBCore:Notify', source, "", 'success')
+QBCore.Functions.CreateCallback('bm-bloodEvidence:server:main:removeSamplesFromPlayer',
+  function(source, cb, listBloodSamplee)
+    tprint(listBloodSamplee)
+    local Player = QBCore.Functions.GetPlayer(source)
+    for index, slot in pairs(listBloodSamplee) do
+      if Player.Functions.RemoveItem(Config.RequiredItems.BloodSample.Name, 1, slot) then
+        TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items
+          [Config.RequiredItems.BloodSample.Name], 'remove')
+        TriggerClientEvent('QBCore:Notify', source, "", 'success')
+      end
     end
-  end
-end)
+    cb(true)
+  end)
 
 QBCore.Functions.CreateCallback('bm-bloodEvidence:server:createNewReport',
   function(_, cb, reportToSave)

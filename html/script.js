@@ -147,12 +147,10 @@ function StartMiniGame() {
   $('.samplesSelected').text(`${_y}`);
   $('.stepsRequired').text(`${_z}`);
   $('#mini-game-progress-bar').css('width', '0');
-  $('#results-of-mini-game').empty();
+  $('#mini-game-results').empty();
 
-  $.post(
-    'https://bm-bloodsample/removeSamplesFromPlayer',
-    JSON.stringify({ arrSelectedSamples }),
-  );
+  console.log(arrSelectedSamples);
+  $.post('https://bm-bloodsample/removeSamplesFromPlayer', JSON.stringify({ arrSelectedSamples }));
 
   const countDown = setInterval(() => {
     $('#mini-game').text(`${_countdown}`);
