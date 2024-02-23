@@ -150,7 +150,6 @@ function StartMiniGame() {
   $('#mini-game-progress-bar').css('width', '0');
   $('#mini-game-results').empty();
 
-
   const countDown = setInterval(() => {
     $('#mini-game').text(`${_countdown}`);
     _countdown--;
@@ -191,7 +190,10 @@ function ScrambleResult(k) {
     })
     .join('');
   arrSelectedSamples[k].info.processed = true;
-  $.post('https://bm-bloodsample/processItem', JSON.stringify({ slot: arrSelectedSamples[k].slot, bloodId:result }));
+  $.post(
+    'https://bm-bloodsample/processItem',
+    JSON.stringify({ slot: arrSelectedSamples[k].slot, bloodId: result }),
+  );
   return result;
 }
 
@@ -303,6 +305,8 @@ function updateStepsRequired(intX) {
 }
 
 function showPlayerBloodSamples(objBloodSamples) {
+  intSelectedSamples = 0;
+  arrSelectedSamples = {};
   const c = $('#bloodSampleContainer');
   c.empty();
   let i = 0;
