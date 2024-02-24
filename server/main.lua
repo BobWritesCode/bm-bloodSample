@@ -106,7 +106,6 @@ QBCore.Functions.CreateCallback('bm-bloodEvidence:server:createNewReport',
 
 QBCore.Functions.CreateCallback('bm-bloodEvidence:server:getReport',
   function(_, cb, reportId)
-    print(reportId)
     MySQL.single('SELECT * FROM bm_bloodsamples WHERE id = ? LIMIT 1', { reportId },
       function(result)
         if result then

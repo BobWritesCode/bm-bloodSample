@@ -360,13 +360,14 @@ function showPlayerBloodSamples(objBloodSamples) {
 
 function getReportFromServer(reportID) {}
 
-function ShowReport(responseCode, reportData) {
+function ShowReport(responseCode, reportId, reportData) {
   const report = JSON.parse(reportData);
   $('#main').css('display', 'none');
   $('#report').css('display', 'block');
   const resultsContainer = $('#report-results-container-others');
+  resultsContainer.empty();
   $('#report-report-id').html(`
-    <h3>Report ID: ${'1'}</h3>
+    <h3>Report ID: ${reportId}</h3>
     <hr/>
   `);
   Object.keys(report).forEach((k) => {

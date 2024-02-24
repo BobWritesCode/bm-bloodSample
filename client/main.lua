@@ -82,6 +82,7 @@ RegisterNUICallback('getReport', function(data, cb)
     SendNUIMessage({
       action = 'showReport',
       responseCode = responseCode,
+      reportId = _data.id,
       report = _data.report,
     })
   end, data.reportId)
