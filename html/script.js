@@ -12,7 +12,7 @@ const PAGES = [
   'page-show-report',
   'page-print-report',
   'page-sample-process-selection',
-  'page-create-report-comparison'
+  'page-create-report-comparison',
 ];
 const BASE_STEPS_REQ = 10;
 let arrSelectedSamples = {};
@@ -64,9 +64,7 @@ window.addEventListener(
                 break;
               case 'form-processedBloodSampleContainer':
                 openPage('page-create-report-comparison');
-                console.log(arrSelectedSamples);
-                console.log(Object.keys(arrSelectedSamples).length);
-                showPlayerBloodSamples(Object.values(arrSelectedSamples), 'processedBloodSampleComparisonContainer');
+                showComparisons(Object.values(arrSelectedSamples));
                 break;
               default:
                 break;
@@ -260,50 +258,37 @@ function processUnprocessedSamples() {
   });
 }
 
-function showResults(_targetSampleID) {
-  // Clear DIV
-  $('#mini-game-results').empty();
-  let _targetSampleStr;
-
-  if (_targetSampleID) {
-    _targetSampleStr = arrSelectedSamples[_targetSampleID].info.bloodId;
+function showComparisons(obj, _target) {
+  $('#processedBloodSampleComparisonContainer').empty();
+  let _targetStr;
+  if (_target) {
+    console.log(_target);
+    console.log('--', JSON.stringify(obj[_target].info.bloodId, null, 2));
+    _targetStr = obj[_target].info.bloodId;
   }
-
-  Object.keys(arrSelectedSamples).forEach((k) => {
-    const _currentID = arrSelectedSamples[k].info.id;
-    let _strToShow;
+  let i = -1;
+  Object.keys(obj).forEach((k) => {
+    i++;
+    const _currentID = obj[k].info.id;
     let matchPercentage;
-
-    if (!_targetSampleID) {
-      _strToShow = ScrambleResult(k);
-      arrSelectedSamples[k].info.bloodId = _strToShow;
-    } else {
-      _strToShow = arrSelectedSamples[k].info.bloodId;
+    let bloodId = obj[k].info.bloodId;
+    if (_target && i == _target) {
+      obj[k].info.matchPercent = 'PRIMARY';
     }
-
-    if (_targetSampleID && _currentID == _targetSampleID) {
-      _strToShow = _targetSampleStr;
-      arrSelectedSamples[k].info.matchPercent = 'PRIMARY';
+    if (_target && i != _target) {
+      matchPercentage = getMatchPercentage(_targetStr, bloodId);
+      obj[k].info.matchPercent = matchPercentage;
     }
-
-    if (_targetSampleID && _currentID != _targetSampleID) {
-      matchPercentage = getMatchPercentage(_targetSampleStr, _strToShow);
-      arrSelectedSamples[k].info.matchPercent = matchPercentage;
-    }
-
     let conditionallyRenderedPart = '';
-
-    if (_targetSampleID) {
+    if (_target) {
       conditionallyRenderedPart = `<p class="mb-1">Match: <span class="fw-normal">${Number(
         matchPercentage,
       ).toFixed(2)}</span>%</p>`;
     }
-
-    if (_targetSampleID && _currentID == _targetSampleID) {
+    if (_target && i == _target) {
       conditionallyRenderedPart = `<p class="mb-1">  <span class="fw-normal">PRIMARY</span></p>`;
     }
-
-    const element = arrSelectedSamples[k];
+    const element = obj[k];
     const el = $(`
       <input type="radio" class="btn-check" name="options-outlined" id="result-bs-${element.info.id}" autocomplete="off">
       <label class="btn btn-outline-success me-2 mb-2 text-light" for="result-bs-${element.info.id}">
@@ -316,18 +301,17 @@ function showResults(_targetSampleID) {
         <p class="fw-bold mb-0">Location: <span class="fw-normal">${element.info.location}</span></p>
         <p class="fw-bold mb-0">Date Time: <span class="fw-normal">${element.info.datetime}</span></p>
         <p class="fw-bold mb-0">Notes: <span class="fw-normal">${element.info.notes}</span></p>
-        <p class="mb-1">Result: <span class="fw-normal">${_strToShow}</span></p>
+        <p class="mb-1">Result: <span class="fw-normal">${bloodId}</span></p>
         ${conditionallyRenderedPart}
       </label>
     `);
-    if (element.info.id == _targetSampleID) {
+    if (i == _target) {
       el.prop('checked', true);
     }
-    $('#mini-game-results').append(el);
+    $('#processedBloodSampleComparisonContainer').append(el);
     el.on('change', function (e) {
       if (el.prop('checked')) {
-        intPrimarySample = element.info.id;
-        showResults(element.info.id);
+        showComparisons(obj, k);
       }
       $('#btnCreateReport').prop('disabled', false);
     });
@@ -377,7 +361,7 @@ function updateStepsRequired(intX) {
 function showPlayerBloodSamples(objBloodSamples, container) {
   intSelectedSamples = 0;
   arrSelectedSamples = {};
-  const c = $('#'+container);
+  const c = $('#' + container);
   c.empty();
   let i = 0;
   objBloodSamples.forEach((bs) => {
