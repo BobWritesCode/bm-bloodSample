@@ -5,7 +5,14 @@ let currentKeyToPress = 0;
 let intSelectedSamples = 0;
 let intStepsRequired = 0;
 let intScore = 0;
-const PAGES = ['page-1', 'page-2'];
+const PAGES = [
+  'page-1',
+  'page-2',
+  'page-create-report-sample-selection',
+  'page-show-report',
+  'page-print-report',
+  'page-sample-process-selection',
+];
 const BASE_STEPS_REQ = 10;
 let arrSelectedSamples = {};
 let intPrimarySample;
