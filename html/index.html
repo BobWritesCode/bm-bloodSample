@@ -28,7 +28,7 @@
         <div>
           <p>You have <span class='intUnprocessedSample'>X</span> sample(s) unprocessed</p>
           <p>You need to process samples before you can create a report with them.</p>
-          <button type="button" class="btn btn-primary" onclick='openPage("page-sample-process-selection")'>
+          <button id='btnGotoSampleSelection' type="button" class="btn btn-primary" onclick='openPage("page-sample-process-selection")'>
             Go to sample processing...
           </button>
         </div>
@@ -36,7 +36,7 @@
         <div>
           <p>You have <span class='intProcessedSample'>X</span> sample(s) processed</p>
           <p>Use processed samples to create a comparison report.</p>
-          <button type="button" class="btn btn-primary" onclick='openPage("page-create-report-sample-selection")'>
+          <button type="button" id='btnGotoReportCreatePage' class="btn btn-primary" onclick='openPage("page-create-report-sample-selection")'>
             Create report
           </button>
         </div>

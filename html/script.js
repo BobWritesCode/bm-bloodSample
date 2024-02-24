@@ -367,7 +367,11 @@ function updateSampleCount() {
   const intX = unprocessedBloodSamples.length;
   const intY = processedBloodSamples.length;
   $('.intUnprocessedSample').text(intX);
+  const boolX = intX==0 ? true : false;
+  $('#btnGotoSampleSelection').prop('disabled', boolX);
   $('.intProcessedSample').text(intY);
+  const boolY = intY==0 ? true : false;
+  $('#btnGotoReportCreatePage').prop('disabled', boolY);
 }
 
 function updateSelectedSamplesCount(boolX) {
