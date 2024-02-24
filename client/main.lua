@@ -74,7 +74,7 @@ RegisterNUICallback('createNewReport', function(data, cb)
       responseCode = responseCode,
       id = id,
     })
-  end, data.arrSelectedSamples)
+  end, data.samples)
 end)
 
 RegisterNUICallback('getReport', function(data, cb)

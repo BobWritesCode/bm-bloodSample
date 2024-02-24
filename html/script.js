@@ -60,7 +60,7 @@ window.addEventListener(
                 openPage('page-sample-processing');
                 break;
               case 'form-retrieveReportById':
-                GetReport(form);
+                GetReport();
                 break;
               case 'form-processedBloodSampleContainer':
                 openPage('page-create-report-comparison');
@@ -149,11 +149,9 @@ function CloseUI() {
   }
 }
 
-function GetReport() {
-  $.post(
-    'https://bm-bloodsample/getReport',
-    JSON.stringify({ reportId: $('#inputRetrieveReportById').val() }),
-  );
+function GetReport(id) {
+  const reportId = id ? id : $('#inputRetrieveReportById').val();
+  $.post('https://bm-bloodsample/getReport', JSON.stringify({ reportId: reportId }));
 }
 
 function StartMiniGame() {
@@ -262,8 +260,6 @@ function showComparisons(obj, _target) {
   $('#processedBloodSampleComparisonContainer').empty();
   let _targetStr;
   if (_target) {
-    console.log(_target);
-    console.log('--', JSON.stringify(obj[_target].info.bloodId, null, 2));
     _targetStr = obj[_target].info.bloodId;
   }
   let i = -1;
@@ -310,15 +306,40 @@ function showComparisons(obj, _target) {
     }
     $('#processedBloodSampleComparisonContainer').append(el);
     el.on('change', function (e) {
+      $('#btnCreateReport').prop('disabled', false);
       if (el.prop('checked')) {
         showComparisons(obj, k);
       }
       $('#btnCreateReport').prop('disabled', false);
     });
   });
+  $('#form-processedBloodSampleComparisonContainer').unbind('submit');
+  $('#form-processedBloodSampleComparisonContainer').submit(function () {
+    createNewReport(obj);
+    return false;
+  });
+}
+
+function createNewReport(obj) {
+  $('#btnCreateReport').prop('disabled', true);
+  $.post('https://bm-bloodsample/createNewReport', JSON.stringify({ samples: obj }));
+}
+
+function createNewReportResponse(id) {
+  $('#mini-game-after-create-report-container').css('display', 'block');
+  $('#mini-game-after-create-report').empty();
+  $('#mini-game-after-create-report').html(`
+    <p>Your report has been generated. The ID is <span>${id}</span></p>
+  `);
+  $('#printCreatedReport').unbind('click');
+  $('#printCreatedReport').click(function () {
+    GetReport(id);
+  });
+  $('#printCreatedReport').text(`Print report: ${id}`);
 }
 
 function openPage(pageToOpen) {
+  $('.btnProcessSelected').prop('disabled', true);
   PAGES.forEach((el) => {
     const boolX = el == pageToOpen ? 'block' : 'none';
     $(`#${el}`).css('display', boolX);
@@ -334,6 +355,8 @@ function openPage(pageToOpen) {
       break;
     case 'page-create-report-sample-selection':
       showPlayerBloodSamples(processedBloodSamples, 'processedBloodSampleContainer');
+      $('#mini-game-after-create-report-container').css('display', 'none');
+      $('#mini-game-after-create-report').empty();
       break;
     default:
       break;
@@ -349,6 +372,8 @@ function updateSampleCount() {
 
 function updateSelectedSamplesCount(boolX) {
   boolX ? intSelectedSamples++ : intSelectedSamples--;
+  const boolY = intSelectedSamples ? false : true;
+  $('.btnProcessSelected').prop('disabled', boolY);
   $('.samplesSelected').text(intSelectedSamples);
   updateStepsRequired(intSelectedSamples);
   $('.stepsRequired').text(intStepsRequired);
@@ -432,23 +457,6 @@ function ShowReport(responseCode, reportId, reportData) {
       <hr/>
     `);
   });
-}
-
-function createNewReport() {
-  $('#btnCreateReport').prop('disabled', true);
-  $.post('https://bm-bloodsample/createNewReport', JSON.stringify({ arrSelectedSamples }));
-  arrSelectedSamples = {};
-}
-
-function createNewReportResponse(id) {
-  $('#mini-game-container').css('display', 'none'); // Hide the element with ID 'mini-game-container'
-
-  $('#mini-game-after-create-report-container').css('display', 'block'); // Show the element with ID 'mini-game-after-create-report'
-
-  $('#mini-game-after-create-report').empty(); // Clear the content of the element with ID 'mini-game-after-create-report'
-  $('#mini-game-after-create-report').html(`
-    <p>Your report has been generated. The ID is <span>${id}</span></p>
-  `); // Insert HTML content into the element with ID 'mini-game-after-create-report'
 }
 
 function SetUpBloodSamplePage() {

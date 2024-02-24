@@ -28,7 +28,7 @@
         <div>
           <p>You have <span class='intUnprocessedSample'>X</span> sample(s) unprocessed</p>
           <p>You need to process samples before you can create a report with them.</p>
-          <button type="submit" class="btn btn-primary" onclick='openPage("page-sample-process-selection")'>
+          <button type="button" class="btn btn-primary" onclick='openPage("page-sample-process-selection")'>
             Go to sample processing...
           </button>
         </div>
@@ -36,15 +36,15 @@
         <div>
           <p>You have <span class='intProcessedSample'>X</span> sample(s) processed</p>
           <p>Use processed samples to create a comparison report.</p>
-          <button type="submit" class="btn btn-primary" onclick='openPage("page-create-report-sample-selection")'>
+          <button type="button" class="btn btn-primary" onclick='openPage("page-create-report-sample-selection")'>
             Create report
           </button>
         </div>
         <hr>
-        <button type="submit" class="btn btn-primary" onclick='openPage("page-show-report")'>
+        <button type="button" class="btn btn-primary" onclick='openPage("page-show-report")'>
           View report
         </button>
-        <button type="submit" class="btn btn-primary" onclick='openPage("page-print-report")'>
+        <button type="button" class="btn btn-primary" onclick='openPage("page-print-report")'>
           Print report
         </button>
       </div>
@@ -52,25 +52,32 @@
         <h2>Sample process selection</h2>
         <form id="form-unprocessedBloodSampleSelection" class="mb-3">
           <h5>Select sample to process:</h3>
-          <div id="unprocessedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
-          <button type="submit" class="btn btn-primary">Process selected sample(s)</button>
+            <div id="unprocessedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
+            <button type="submit" class="btnProcessSelected btn btn-primary" disabled>Process selected
+              sample(s)</button>
         </form>
       </div>
       <div id='page-create-report-sample-selection'>
         <h2>Create report - Sample selection</h2>
         <form id="form-processedBloodSampleContainer" class="mb-3">
           <h5>Select samples to create comparison report:</h3>
-          <div id="processedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
-          <button type="submit" class="btn btn-primary">Select highlighted sample(s)</button>
+            <div id="processedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
+            <button type="submit" class="btnProcessSelected btn btn-primary" disabled>Select highlighted
+              sample(s)</button>
         </form>
       </div>
       <div id='page-create-report-comparison'>
         <h2>Create report - Sample selection</h2>
-        <form id="form-processedBloodSampleComparisonContainer" class="mb-3">
+        <form id="form-processedBloodSampleComparisonContainer" class="mb-3" onsubmit="">
           <h5>Select samples to create comparison report:</h3>
-          <div id="processedBloodSampleComparisonContainer" class="form-check flex-wrap mb-3"></div>
-          <button type="submit" class="btn btn-primary">Create report</button>
+            <div id="processedBloodSampleComparisonContainer" class="form-check flex-wrap mb-3"></div>
+            <button id='btnCreateReport' type="submit" class="btn btn-primary" disabled>Create report</button>
         </form>
+        <div id="mini-game-after-create-report-container" class="mb-3">
+          <div id="mini-game-after-create-report"></div>
+          <button type="button" id='printCreatedReport' class="btn btn-primary">Print Report</button>
+          <button type="button" class="btn btn-primary" onclick='openPage("page-1")'>Home</button>
+        </div>
       </div>
       <div id='page-show-report'>
         <h2>Show Report</h2>
@@ -87,7 +94,6 @@
       <div id='page-print-report'>
         <h2>Print Report</h2>
       </div>
-
       <div id="page-sample-processing">
         <div id="mini-game-container" class="flex-column align-items-center w-100">
           <h2>Processing Sample</h2>
@@ -118,10 +124,6 @@
               </button>
             </div>
           </div>
-        </div>
-        <div id="mini-game-after-create-report-container">
-          <div id="mini-game-after-create-report"></div>
-          <button type="button" class="btn btn-primary" onclick='openPage("page-1")'></button>
         </div>
       </div>
     </div>
