@@ -16,6 +16,8 @@ const PAGES = [
 const BASE_STEPS_REQ = 10;
 let arrSelectedSamples = {};
 let intPrimarySample;
+let processedBloodSamples = 0;
+let unprocessedBloodSamples = 0;
 
 const ARROW_ICONS = {
   down: {
@@ -91,13 +93,15 @@ document.onreadystatechange = () => {
           arrSelectedSamples = {};
           break;
         case 'provideBloodSamplesOnPerson':
-          showPlayerBloodSamples(e.data.bloodSamples);
+          processedBloodSamples = e.data.processedBloodSamples;
+          unprocessedBloodSamples = e.data.unprocessedBloodSamples;
+          updateSampleCount();
           break;
         case 'createNewReportResponse':
           createNewReportResponse(e.data.id);
           break;
         case 'showReport':
-          ShowReport(e.data.responseCode, e.data.report);
+          ShowReport(e.data.responseCode, e.data.reportId, e.data.report);
           break;
         default:
           break;
@@ -311,6 +315,24 @@ function openPage(pageToOpen) {
     const boolX = el == pageToOpen ? 'block' : 'none';
     $(`#${el}`).css('display', boolX);
   });
+
+  switch (pageToOpen) {
+    case 'page-sample-process-selection':
+      showPlayerBloodSamples(unprocessedBloodSamples);
+      break;
+    case 'page-create-report-sample-selection':
+      showPlayerBloodSamples(processedBloodSamples);
+      break;
+    default:
+      break;
+  }
+}
+
+function updateSampleCount() {
+  const intX = unprocessedBloodSamples.length;
+  const intY = processedBloodSamples.length;
+  $('.intUnprocessedSample').text(intX);
+  $('.intProcessedSample').text(intY);
 }
 
 function updateSelectedSamplesCount(boolX) {
@@ -327,7 +349,7 @@ function updateStepsRequired(intX) {
 function showPlayerBloodSamples(objBloodSamples) {
   intSelectedSamples = 0;
   arrSelectedSamples = {};
-  const c = $('#bloodSampleContainer');
+  const c = $('.bloodSampleContainer');
   c.empty();
   let i = 0;
   objBloodSamples.forEach((bs) => {

@@ -25,7 +25,7 @@
       <hr />
       <div id="page-1">
         <div>
-          <p>You have <span>X</span> sample(s) unprocessed</p>
+          <p>You have <span class='intUnprocessedSample'>X</span> sample(s) unprocessed</p>
           <p>You need to process samples before you can create a report with them.</p>
           <button type="submit" class="btn btn-primary" onclick='openPage("page-sample-process-selection")'>
             Go to sample processing...
@@ -33,7 +33,7 @@
         </div>
         <hr>
         <div>
-          <p>You have <span>X</span> sample(s) processed</p>
+          <p>You have <span class='intProcessedSample'>X</span> sample(s) processed</p>
           <p>Use processed samples to create a comparison report.</p>
           <button type="submit" class="btn btn-primary" onclick='openPage("page-create-report-sample-selection")'>
             Create report
@@ -47,8 +47,21 @@
           Print report
         </button>
       </div>
+      <div id='page-sample-process-selection'>
+        <h2>Sample process selection</h2>
+        <form id="form-bloodSampleContainer" class="mb-3">
+          <h5>Select sample to process:</h3>
+          <div id="" class="bloodSampleContainer form-check flex-wrap mb-3"></div>
+          <button type="submit" class="btn btn-primary">Process selected sample(s)</button>
+        </form>
+      </div>
       <div id='page-create-report-sample-selection'>
         <h2>Create report - Sample selection</h2>
+        <form id="form-????" class="mb-3">
+          <h5>Select samples to create comparison report:</h3>
+          <div id="" class="bloodSampleContainer form-check flex-wrap mb-3"></div>
+          <button type="submit" class="btn btn-primary">Compare selected sample(s)</button>
+        </form>
       </div>
       <div id='page-show-report'>
         <h2>Show Report</h2>
@@ -65,14 +78,7 @@
       <div id='page-print-report'>
         <h2>Print Report</h2>
       </div>
-      <div id='page-sample-process-selection'>
-        <h2>Sample process selection</h2>
-        <form id="form-bloodSampleContainer" class="mb-3">
-          <h5>Select sample to process:</h3>
-          <div id="bloodSampleContainer" class="form-check flex-wrap mb-3"></div>
-          <button type="submit" class="btn btn-primary">Process selected sample(s)</button>
-        </form>
-      </div>
+
       <div id="page-2">
         <div id="mini-game-container" class="flex-column align-items-center w-100">
           <h2>Processing Sample</h2>

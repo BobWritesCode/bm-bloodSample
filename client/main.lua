@@ -91,15 +91,22 @@ end)
 function GetPlayerBloodSamples()
   local Player = QBCore.Functions.GetPlayerData()
   local items = Player.items
-  local bloodSamples = {}
+  local processedBloodSamples = {}
+  local unprocessedBloodSamples = {}
   for _, item in ipairs(items) do
     if item.name == Config.RequiredItems.BloodSample.Name then
-      table.insert(bloodSamples, item)
+      Tprint(item)
+      if item.info.processed then
+        table.insert(processedBloodSamples, item)
+      else
+        table.insert(unprocessedBloodSamples, item)
+      end
     end
   end
   SendNUIMessage({
     action = 'provideBloodSamplesOnPerson',
-    bloodSamples = bloodSamples
+    processedBloodSamples = processedBloodSamples,
+    unprocessedBloodSamples = unprocessedBloodSamples
   })
 end
 
