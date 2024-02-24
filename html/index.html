@@ -49,17 +49,17 @@
       </div>
       <div id='page-sample-process-selection'>
         <h2>Sample process selection</h2>
-        <form id="form-bloodSampleContainer" class="mb-3">
+        <form id="form-unprocessedBloodSampleSelection" class="mb-3">
           <h5>Select sample to process:</h3>
-          <div id="" class="bloodSampleContainer form-check flex-wrap mb-3"></div>
+          <div id="unprocessedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
           <button type="submit" class="btn btn-primary">Process selected sample(s)</button>
         </form>
       </div>
       <div id='page-create-report-sample-selection'>
         <h2>Create report - Sample selection</h2>
-        <form id="form-????" class="mb-3">
+        <form id="form-processedBloodSampleContainer" class="mb-3">
           <h5>Select samples to create comparison report:</h3>
-          <div id="" class="bloodSampleContainer form-check flex-wrap mb-3"></div>
+          <div id="processedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
           <button type="submit" class="btn btn-primary">Compare selected sample(s)</button>
         </form>
       </div>
@@ -79,7 +79,7 @@
         <h2>Print Report</h2>
       </div>
 
-      <div id="page-2">
+      <div id="page-sample-processing">
         <div id="mini-game-container" class="flex-column align-items-center w-100">
           <h2>Processing Sample</h2>
           <p>
@@ -102,10 +102,10 @@
             </div>
             <div id="mini-game" class="mb-3 fs-1"></div>
             <div id="mini-game-results-container" class="flex-column align-items-center">
-              <p>Choose the primary:</p>
-              <div id="mini-game-results" class="orm-check flex-wrap mb-3 mb-3"></div>
-              <button id="btnCreateReport" type="button" class="btn btn-success mb-3" onclick="createNewReport()">
-                Create Report
+              <p>Results:</p>
+              <div id="mini-game-results" class="d-flex flex-wrap mb-3 mb-3"></div>
+              <button type="button" class="btn btn-primary mb-3" onclick='openPage("page-1")'>
+                Home
               </button>
             </div>
           </div>

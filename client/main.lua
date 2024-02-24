@@ -95,7 +95,6 @@ function GetPlayerBloodSamples()
   local unprocessedBloodSamples = {}
   for _, item in ipairs(items) do
     if item.name == Config.RequiredItems.BloodSample.Name then
-      Tprint(item)
       if item.info.processed then
         table.insert(processedBloodSamples, item)
       else

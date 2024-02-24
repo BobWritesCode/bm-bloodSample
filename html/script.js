@@ -7,7 +7,7 @@ let intStepsRequired = 0;
 let intScore = 0;
 const PAGES = [
   'page-1',
-  'page-2',
+  'page-sample-processing',
   'page-create-report-sample-selection',
   'page-show-report',
   'page-print-report',
@@ -22,26 +22,21 @@ let unprocessedBloodSamples = 0;
 const ARROW_ICONS = {
   down: {
     icon: $(`<i class="bi bi-arrow-down-square"></i>`),
-    key: 40,
+    key: 40, // Arrow Down: 40
   },
   up: {
     icon: $(`<i class="bi bi-arrow-up-square"></i>`),
-    key: 38,
+    key: 38, // Arrow Up: 38
   },
   left: {
     icon: $(`<i class="bi bi-arrow-left-square"></i>`),
-    key: 37,
+    key: 37, // Arrow Left: 37
   },
   right: {
     icon: $(`<i class="bi bi-arrow-right-square"></i>`),
-    key: 39,
+    key: 39, // Arrow Right: 39
   },
 };
-
-// Arrow Up: 38
-// Arrow Down: 40
-// Arrow Left: 37
-// Arrow Right: 39
 
 window.addEventListener('DOMContentLoaded', function () {
   $.post('https://bm-bloodsample/nuiReady', JSON.stringify({}));
@@ -60,9 +55,8 @@ window.addEventListener(
             event.stopPropagation();
           } else {
             switch (form.id) {
-              case 'form-bloodSampleContainer':
-                openPage('page-2');
-                SetUpBloodSamplePage();
+              case 'form-unprocessedBloodSampleSelection':
+                openPage('page-sample-processing');
                 break;
               case 'form-retrieveReportById':
                 GetReport(form);
@@ -193,7 +187,7 @@ function StartMiniGame() {
           clearInterval(startGame);
           $('#mini-game').empty();
           isGamePlaying = false;
-          showResults();
+          processUnprocessedSamples();
           $('#mini-game-results-container').css('display', 'flex');
         }
       }, 500);
@@ -234,6 +228,29 @@ function getMatchPercentage(_targetSampleStr, _newBloodID) {
     }
   }
   return (matches / max_length) * 100;
+}
+
+function processUnprocessedSamples() {
+  Object.keys(arrSelectedSamples).forEach((k) => {
+    let result = ScrambleResult(k);
+    arrSelectedSamples[k].info.bloodId = result;
+
+    const element = arrSelectedSamples[k];
+    const el = $(`
+      <div class="d-flex flex-column border border-success rounded me-2 mb-2 p-2 text-light justify-content-center align-items-center">
+        <p class="fw-bold mb-0">ID: <span class="fw-normal">${element.info.id}</span></p>
+        <p class="fw-bold mb-0">Source: <span class="fw-normal">${element.info.source}</span></p>
+        <p class="fw-bold mb-0">Quality: <span class="fw-normal">${element.info.quality}</span></p>
+        <p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">${element.info.bloodId}</span></p>
+        <p class="fw-bold mb-0">BloodType: <span class="fw-normal">${element.info.bloodType}</span></p>
+        <p class="fw-bold mb-0">Source: <span class="fw-normal">${element.info.source}</span></p>
+        <p class="fw-bold mb-0">Location: <span class="fw-normal">${element.info.location}</span></p>
+        <p class="fw-bold mb-0">Date Time: <span class="fw-normal">${element.info.datetime}</span></p>
+        <p class="fw-bold mb-0">Notes: <span class="fw-normal">${element.info.notes}</span></p>
+      <div>
+    `);
+    $('#mini-game-results').append(el);
+  });
 }
 
 function showResults(_targetSampleID) {
@@ -317,11 +334,15 @@ function openPage(pageToOpen) {
   });
 
   switch (pageToOpen) {
+    case 'page-sample-processing':
+      $('#mini-game-results-container').css('display', 'none');
+      SetUpBloodSamplePage();
+      break;
     case 'page-sample-process-selection':
-      showPlayerBloodSamples(unprocessedBloodSamples);
+      showPlayerBloodSamples(unprocessedBloodSamples, '#unprocessedBloodSampleContainer');
       break;
     case 'page-create-report-sample-selection':
-      showPlayerBloodSamples(processedBloodSamples);
+      showPlayerBloodSamples(processedBloodSamples, '#processedBloodSampleContainer');
       break;
     default:
       break;
@@ -346,10 +367,10 @@ function updateStepsRequired(intX) {
   intStepsRequired = intX > 0 ? BASE_STEPS_REQ + 1 * intX : 0;
 }
 
-function showPlayerBloodSamples(objBloodSamples) {
+function showPlayerBloodSamples(objBloodSamples, container) {
   intSelectedSamples = 0;
   arrSelectedSamples = {};
-  const c = $('.bloodSampleContainer');
+  const c = $(container);
   c.empty();
   let i = 0;
   objBloodSamples.forEach((bs) => {
