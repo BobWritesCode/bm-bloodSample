@@ -353,13 +353,9 @@ function showPlayerBloodSamples(objBloodSamples) {
   c.empty();
   let i = 0;
   objBloodSamples.forEach((bs) => {
-    let conditionallyRenderedPart = '';
-
-    if (bs.info.processed) {
-      conditionallyRenderedPart = `<p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">${bs.info.bloodId}</span></p>`;
-    } else {
-      conditionallyRenderedPart = `<p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">???</span></p>`;
-    }
+    let conditionallyRenderedPart = bs.info.processed
+      ? `<p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">${bs.info.bloodId}</span></p>`
+      : `<p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">???</span></p>`;
 
     const el = $(`
       <input type="checkbox" class="btn-check" name="options-outlined" id="bs-${i}" autocomplete="off">
