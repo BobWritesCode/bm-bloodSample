@@ -12,6 +12,7 @@ const PAGES = [
   'page-show-report',
   'page-print-report',
   'page-sample-process-selection',
+  'page-create-report-comparison'
 ];
 const BASE_STEPS_REQ = 10;
 let arrSelectedSamples = {};
@@ -60,6 +61,12 @@ window.addEventListener(
                 break;
               case 'form-retrieveReportById':
                 GetReport(form);
+                break;
+              case 'form-processedBloodSampleContainer':
+                openPage('page-create-report-comparison');
+                console.log(arrSelectedSamples);
+                console.log(Object.keys(arrSelectedSamples).length);
+                showPlayerBloodSamples(Object.values(arrSelectedSamples), 'processedBloodSampleComparisonContainer');
                 break;
               default:
                 break;
@@ -339,10 +346,10 @@ function openPage(pageToOpen) {
       SetUpBloodSamplePage();
       break;
     case 'page-sample-process-selection':
-      showPlayerBloodSamples(unprocessedBloodSamples, '#unprocessedBloodSampleContainer');
+      showPlayerBloodSamples(unprocessedBloodSamples, 'unprocessedBloodSampleContainer');
       break;
     case 'page-create-report-sample-selection':
-      showPlayerBloodSamples(processedBloodSamples, '#processedBloodSampleContainer');
+      showPlayerBloodSamples(processedBloodSamples, 'processedBloodSampleContainer');
       break;
     default:
       break;
@@ -370,7 +377,7 @@ function updateStepsRequired(intX) {
 function showPlayerBloodSamples(objBloodSamples, container) {
   intSelectedSamples = 0;
   arrSelectedSamples = {};
-  const c = $(container);
+  const c = $('#'+container);
   c.empty();
   let i = 0;
   objBloodSamples.forEach((bs) => {
@@ -379,8 +386,8 @@ function showPlayerBloodSamples(objBloodSamples, container) {
       : `<p class="fw-bold mb-0">Blood ID: <span class="fw-normal roboto-mono-400">???</span></p>`;
 
     const el = $(`
-      <input type="checkbox" class="btn-check" name="options-outlined" id="bs-${i}" autocomplete="off">
-      <label class="btn btn-outline-success me-2 mb-2 text-light" for="bs-${i}">
+      <input type="checkbox" class="btn-check" name="options-outlined" id="bs-${i}-${container}" autocomplete="off">
+      <label class="btn btn-outline-success me-2 mb-2 text-light" for="bs-${i}-${container}">
         <p class="fw-bold mb-0">ID: <span class="fw-normal">${bs.info.id}</span></p>
         <p class="fw-bold mb-0">Source: <span class="fw-normal">${bs.info.source}</span></p>
         <p class="fw-bold mb-0">Quality: <span class="fw-normal">${bs.info.quality}</span></p>
@@ -450,8 +457,6 @@ function createNewReport() {
 }
 
 function createNewReportResponse(id) {
-  console.log(id); // Log the ID to the console.
-
   $('#mini-game-container').css('display', 'none'); // Hide the element with ID 'mini-game-container'
 
   $('#mini-game-after-create-report-container').css('display', 'block'); // Show the element with ID 'mini-game-after-create-report'

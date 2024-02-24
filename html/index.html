@@ -24,6 +24,7 @@
       </div>
       <hr />
       <div id="page-1">
+        <h2>Welcome</h2>
         <div>
           <p>You have <span class='intUnprocessedSample'>X</span> sample(s) unprocessed</p>
           <p>You need to process samples before you can create a report with them.</p>
@@ -60,7 +61,15 @@
         <form id="form-processedBloodSampleContainer" class="mb-3">
           <h5>Select samples to create comparison report:</h3>
           <div id="processedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
-          <button type="submit" class="btn btn-primary">Compare selected sample(s)</button>
+          <button type="submit" class="btn btn-primary">Select highlighted sample(s)</button>
+        </form>
+      </div>
+      <div id='page-create-report-comparison'>
+        <h2>Create report - Sample selection</h2>
+        <form id="form-processedBloodSampleComparisonContainer" class="mb-3">
+          <h5>Select samples to create comparison report:</h3>
+          <div id="processedBloodSampleComparisonContainer" class="form-check flex-wrap mb-3"></div>
+          <button type="submit" class="btn btn-primary">Create report</button>
         </form>
       </div>
       <div id='page-show-report'>
