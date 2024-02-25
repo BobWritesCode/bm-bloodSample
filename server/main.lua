@@ -27,16 +27,17 @@ QBCore.Functions.CreateUseableItem('bloodsamplekit', function(source)
   TriggerClientEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', source)
 end)
 
-QBCore.Functions.CreateUseableItem('bloodsamplereport', function(source)
+QBCore.Functions.CreateUseableItem('bloodsamplereport', function(source, item)
   local Player = QBCore.Functions.GetPlayer(source)
   if not Player or not Player.Functions.GetItemByName('bloodsamplereport') then return end
+  TriggerClientEvent('bm-bloodEvidence:client:showReport', source, item.info.id)
 end)
 
 QBCore.Commands.Add(Config.Commands.GetBloodSample, "Get blood sample from closest player", {}, false, function(source)
   TriggerClientEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', source)
 end)
 
-RegisterNetEvent('bm-bloodEvidence:server:main:printReport', function(id)
+RegisterNetEvent('bm-bloodEvidence:server:printReport', function(id)
   local Player = QBCore.Functions.GetPlayer(source)
   local info = {
     id = id,
@@ -49,7 +50,7 @@ RegisterNetEvent('bm-bloodEvidence:server:main:printReport', function(id)
 end)
 
 local bloodSampleId = 1
-RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', function(targetPlayerId, notes)
+RegisterNetEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', function(targetPlayerId, notes)
   local Player = QBCore.Functions.GetPlayer(source)
   local targetPlayer = QBCore.Functions.GetPlayer(targetPlayerId)
   local bloodId = targetPlayer.PlayerData.metadata
@@ -79,10 +80,10 @@ RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', functi
   else
     TriggerClientEvent('QBCore:Notify', source, "You do not have the correct item (Panda)", 'error')
   end
-  TriggerClientEvent('bm-bloodEvidence:client:main:provideBloodSample', source, bloodId, bloodType)
+  TriggerClientEvent('bm-bloodEvidence:client:provideBloodSample', source, bloodId, bloodType)
 end)
 
-QBCore.Functions.CreateCallback('bm-bloodEvidence:server:main:giveProcessedSample',
+QBCore.Functions.CreateCallback('bm-bloodEvidence:server:giveProcessedSample',
   function(source, cb, slot, bloodId)
     local Player = QBCore.Functions.GetPlayer(source)
     local itemInfo = Player.PlayerData.items[slot].info

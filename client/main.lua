@@ -21,7 +21,7 @@ RegisterNUICallback('nuiReady', function(_, cb)
 end)
 
 RegisterNUICallback('printReport', function(data, cb)
-  TriggerServerEvent('bm-bloodEvidence:server:main:printReport', data.reportId)
+  TriggerServerEvent('bm-bloodEvidence:server:printReport', data.reportId)
 end)
 
 RegisterNetEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', function()
@@ -33,14 +33,25 @@ RegisterNetEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', function()
   if targetPlayer ~= -1 and distance < 2.5 or DebugMode then
     local targetPlayerId = not DebugMode and GetPlayerServerId(targetPlayer) or GetPlayerServerId(PlayerId())
     local notes = 'To be coded'
-    TriggerServerEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', targetPlayerId, notes)
+    TriggerServerEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', targetPlayerId, notes)
   else
     QBCore.Functions.Notify("No one close enough", 'error')
   end
 end)
 
+RegisterNetEvent('bm-bloodEvidence:client:showReport', function(reportId)
+  QBCore.Functions.TriggerCallback('bm-bloodEvidence:server:getReport', function(responseCode, _data)
+    SendNUIMessage({
+      action = 'showReport',
+      responseCode = responseCode,
+      reportId = _data.id,
+      report = _data.report,
+    })
+  end, reportId)
+  SetNuiFocus(true, true)
+end)
 
-RegisterNetEvent('bm-bloodEvidence:client:main:provideBloodSample', function(bloodId, bloodtype)
+RegisterNetEvent('bm-bloodEvidence:client:provideBloodSample', function(bloodId, bloodtype)
 end)
 
 
@@ -63,7 +74,7 @@ RegisterNUICallback('processItem', function(data, cb)
     Wait(100)
   end
   isProcessing = true
-  QBCore.Functions.TriggerCallback('bm-bloodEvidence:server:main:giveProcessedSample', function(isTrue)
+  QBCore.Functions.TriggerCallback('bm-bloodEvidence:server:giveProcessedSample', function(isTrue)
     if isTrue then
       GetPlayerBloodSamples()
       isProcessing = false

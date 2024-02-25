@@ -100,6 +100,7 @@ document.onreadystatechange = () => {
           createNewReportResponse(e.data.id);
           break;
         case 'showReport':
+          OpenUI();
           ShowReport(e.data.responseCode, e.data.reportId, e.data.report);
           break;
         default:
