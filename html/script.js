@@ -149,6 +149,11 @@ function CloseUI() {
   }
 }
 
+function PrintReport(id) {
+  const reportId = id ? id : $('#inputRetrieveReportById').val();
+  $.post('https://bm-bloodsample/printReport', JSON.stringify({ reportId: reportId }));
+}
+
 function GetReport(id) {
   const reportId = id ? id : $('#inputRetrieveReportById').val();
   $.post('https://bm-bloodsample/getReport', JSON.stringify({ reportId: reportId }));
@@ -333,7 +338,8 @@ function createNewReportResponse(id) {
   `);
   $('#printCreatedReport').unbind('click');
   $('#printCreatedReport').click(function () {
-    GetReport(id);
+    PrintReport(id);
+    // GetReport(id);
   });
   $('#printCreatedReport').text(`Print report: ${id}`);
 }

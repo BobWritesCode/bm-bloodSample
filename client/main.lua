@@ -20,6 +20,10 @@ RegisterNUICallback('nuiReady', function(_, cb)
   NUIReady = true
 end)
 
+RegisterNUICallback('printReport', function(data, cb)
+  TriggerServerEvent('bm-bloodEvidence:server:main:printReport', data.reportId)
+end)
+
 RegisterNetEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', function()
   local targetPlayer, distance = QBCore.Functions.GetClosestPlayer()
   if not QBCore.Functions.HasItem(Config.RequiredItems.BloodSampleKit.Name) then

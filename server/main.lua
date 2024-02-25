@@ -36,6 +36,17 @@ QBCore.Commands.Add(Config.Commands.GetBloodSample, "Get blood sample from close
   TriggerClientEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', source)
 end)
 
+RegisterNetEvent('bm-bloodEvidence:server:main:printReport', function(id)
+  local Player = QBCore.Functions.GetPlayer(source)
+  local info = {
+    id = id,
+    label = "Blood sample report. ID: " .. id,
+    type = 'item',
+  }
+  if not Player.Functions.AddItem(Config.RequiredItems.BloodSampleReport.Name, 1, false, info) then return end
+  TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSampleReport.Name],
+  'add')
+end)
 
 local bloodSampleId = 1
 RegisterNetEvent('bm-bloodEvidence:server:main:getBloodSampleFromPlayer', function(targetPlayerId, notes)
