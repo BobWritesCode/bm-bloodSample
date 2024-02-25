@@ -33,7 +33,8 @@ RegisterNetEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', function()
   if targetPlayer ~= -1 and distance < 2.5 or DebugMode then
     local targetPlayerId = not DebugMode and GetPlayerServerId(targetPlayer) or GetPlayerServerId(PlayerId())
     local notes = 'To be coded'
-    TriggerServerEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', targetPlayerId, notes)
+    local street = GetStreetName()
+    TriggerServerEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', targetPlayerId, notes, street)
   else
     QBCore.Functions.Notify("No one close enough", 'error')
   end
@@ -102,6 +103,14 @@ RegisterNUICallback('getReport', function(data, cb)
     })
   end, data.reportId)
 end)
+
+function GetStreetName()
+  local ped = PlayerPedId()
+  local coords = GetEntityCoords(ped)
+  local streetHash, crossingHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+  local streetName = GetStreetNameFromHashKey(streetHash)
+  return streetName
+end
 
 function GetPlayerBloodSamples()
   local Player = QBCore.Functions.GetPlayerData()

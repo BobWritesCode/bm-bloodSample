@@ -45,20 +45,19 @@ RegisterNetEvent('bm-bloodEvidence:server:printReport', function(id)
     type = 'item',
   }
   if not Player.Functions.AddItem(Config.RequiredItems.BloodSampleReport.Name, 1, false, info) then return end
-  TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSampleReport.Name],
-  'add')
+  TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items
+    [Config.RequiredItems.BloodSampleReport.Name],
+    'add')
 end)
 
 local bloodSampleId = 1
-RegisterNetEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', function(targetPlayerId, notes)
+RegisterNetEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', function(targetPlayerId, notes, street)
   local Player = QBCore.Functions.GetPlayer(source)
   local targetPlayer = QBCore.Functions.GetPlayer(targetPlayerId)
   local bloodId = targetPlayer.PlayerData.metadata
       ['fingerprint'] -- We will use fingerprint now, likely set up a blood system.
   local bloodType = targetPlayer.PlayerData.metadata
       ['bloodtype']   -- We will use fingerprint now, likely set up a blood system.
-  -- if DebugMode then print(bloodId) end
-  -- if DebugMode then print(bloodType) end
   if Player.Functions.RemoveItem(Config.RequiredItems.BloodSampleKit.Name, 1) then
     local id = bloodSampleId
     bloodSampleId = bloodSampleId + 1
@@ -69,8 +68,8 @@ RegisterNetEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', function(ta
       type = 'dna',
       bloodId = bloodId,
       bloodType = bloodType,
-      location = "Somewhere",
-      datetime = "Sometime",
+      location = street,
+      datetime = GetDateTime(),
       quality = "Fresh",
       notes = notes or 'DEFAULT NOTE',
     }
@@ -126,6 +125,22 @@ QBCore.Functions.CreateCallback('bm-bloodEvidence:server:getReport',
         cb(404, {})
       end)
   end)
+
+function GetDateTime()
+  local month_abbr = {
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  }
+  local current_time = os.date("*t")
+  local year = current_time.year
+  local month = current_time.month
+  local day = current_time.day
+  local hour = current_time.hour
+  local min = current_time.min
+  local sec = current_time.sec
+  local dateTimeString = string.format("%02d-%s-%02d %02d:%02d:%02d", day, month_abbr[month], year, hour, min, sec)
+  return dateTimeString
+end
 
 function Tprint(tbl, indent)
   if not indent then indent = 0 end
