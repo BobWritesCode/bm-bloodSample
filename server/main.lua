@@ -37,6 +37,11 @@ QBCore.Commands.Add(Config.Commands.GetBloodSample, "Get blood sample from close
   TriggerClientEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', source)
 end)
 
+-- TO BE REMOVED
+QBCore.Commands.Add('bmnotes', "", {}, false, function(source)
+  TriggerClientEvent('bm-bloodEvidence:client:openNoteBox', source)
+end)
+
 RegisterNetEvent('bm-bloodEvidence:server:printReport', function(id)
   local Player = QBCore.Functions.GetPlayer(source)
   local info = {

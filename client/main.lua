@@ -24,6 +24,13 @@ RegisterNUICallback('printReport', function(data, cb)
   TriggerServerEvent('bm-bloodEvidence:server:printReport', data.reportId)
 end)
 
+RegisterNetEvent('bm-bloodEvidence:client:openNoteBox', function()
+    SendNUIMessage({
+      action = 'openNoteBox',
+    })
+  SetNuiFocus(true, true)
+end)
+
 RegisterNetEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', function()
   local targetPlayer, distance = QBCore.Functions.GetClosestPlayer()
   if not QBCore.Functions.HasItem(Config.RequiredItems.BloodSampleKit.Name) then

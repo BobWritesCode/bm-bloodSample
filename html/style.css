@@ -1,14 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Reenie+Beanie&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 * {
   margin: 0;
   padding: 0;
-}
-
-#report {
-  font-family: 'Merriweather', serif;
-  font-weight: 400;
-  font-style: normal;
 }
 
 body,
@@ -22,7 +16,8 @@ body,
 #page-show-report,
 #page-print-report,
 #page-sample-process-selection,
-#page-create-report-comparison {
+#page-create-report-comparison,
+#notes {
   display: none;
 }
 
@@ -60,6 +55,7 @@ button:visited {
   box-shadow: none !important;
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
+  border-color: inherit;
 }
 
 #appContainer {
@@ -99,6 +95,43 @@ button:visited {
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  font-family: 'Merriweather', serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+#notes {
+  width: 300px;
+  height: 120px;
+  overflow-y:hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#notes form {
+  width: 100%;
+  height: 100%;
+}
+
+#notes textarea {
+  /* font-size: larger; */
+  border-color: rgba(0, 0, 0, 0);
+  font-size: 30px;
+  background-color: rgb(232, 232, 232);
+  color: #a11616;
+  font-family: "Reenie Beanie", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#notes button {
+  /* font-size: larger; */
+  font-size: 30px;
+  color: #a11616;
+  font-family: "Reenie Beanie", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .merriweather-light {
@@ -152,6 +185,12 @@ button:visited {
 .roboto-mono-400 {
   font-family: 'Roboto Mono', monospace;
   font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.reenie-beanie-regular {
+  font-family: "Reenie Beanie", cursive;
   font-weight: 400;
   font-style: normal;
 }

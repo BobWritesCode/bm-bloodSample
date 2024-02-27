@@ -66,6 +66,9 @@ window.addEventListener(
                 openPage('page-create-report-comparison');
                 showComparisons(Object.values(arrSelectedSamples));
                 break;
+              case 'form-notes':
+
+                break;
               default:
                 break;
             }
@@ -103,6 +106,10 @@ document.onreadystatechange = () => {
           OpenUI();
           ShowReport(e.data.responseCode, e.data.reportId, e.data.report);
           break;
+        case 'openNoteBox':
+          OpenUI();
+          OpenNoteBox();
+          break;
         default:
           break;
       }
@@ -139,6 +146,15 @@ function OpenUI() {
   }
 }
 
+function OpenNoteBox() {
+  $('#main').css('display', 'none');
+  $('#notes').css('display', 'block');
+}
+
+function CloseNoteBox() {
+  $('#notes').css('display', 'none');
+}
+
 function CloseUI() {
   if (isUIOpen) {
     isUIOpen = false;
@@ -146,6 +162,7 @@ function CloseUI() {
     $('#appContainer').css('display', 'none');
     $('body').css('display', 'none');
     $('#report').css('display', 'none');
+    CloseNoteBox();
     $.post('https://bm-bloodsample/closeUI', JSON.stringify({}));
   }
 }
@@ -374,10 +391,10 @@ function updateSampleCount() {
   const intX = unprocessedBloodSamples.length;
   const intY = processedBloodSamples.length;
   $('.intUnprocessedSample').text(intX);
-  const boolX = intX==0 ? true : false;
+  const boolX = intX == 0 ? true : false;
   $('#btnGotoSampleSelection').prop('disabled', boolX);
   $('.intProcessedSample').text(intY);
-  const boolY = intY==0 ? true : false;
+  const boolY = intY == 0 ? true : false;
   $('#btnGotoReportCreatePage').prop('disabled', boolY);
 }
 
