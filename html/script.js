@@ -59,14 +59,13 @@ window.addEventListener(
                 openPage('page-sample-processing');
                 break;
               case 'form-retrieveReportById':
-                GetReport();
+                GetReport(null, true);
                 break;
               case 'form-processedBloodSampleContainer':
                 openPage('page-create-report-comparison');
                 showComparisons(Object.values(arrSelectedSamples));
                 break;
               case 'form-notes':
-
                 break;
               default:
                 break;
@@ -91,7 +90,6 @@ document.onreadystatechange = () => {
           break;
         case 'closeUI':
           CloseUI();
-          arrSelectedSamples = {};
           break;
         case 'provideBloodSamplesOnPerson':
           processedBloodSamples = e.data.processedBloodSamples;
@@ -159,6 +157,7 @@ function CloseNoteBox() {
 }
 
 function CloseUI() {
+  arrSelectedSamples = {};
   if (isUIOpen) {
     isUIOpen = false;
     $('#main').css('display', 'none');
@@ -339,7 +338,10 @@ function showComparisons(obj, _target) {
       if (el.prop('checked')) {
         showComparisons(obj, k);
       }
-      $('#btnCreateReport').prop('disabled', false);
+      $('#btnCreateReport')
+        .prop('disabled', false)
+        .css('justify-self', 'center;')
+        .css('align-self', 'center;');
     });
   });
   $('#form-processedBloodSampleComparisonContainer').unbind('submit');
@@ -355,17 +357,16 @@ function createNewReport(obj) {
 }
 
 function createNewReportResponse(id) {
-  $('#mini-game-after-create-report-container').css('display', 'block');
+  $('#mini-game-after-create-report-container').css('display', 'flex');
   $('#mini-game-after-create-report').empty();
   $('#mini-game-after-create-report').html(`
     <p>Your report has been generated. The ID is <span>${id}</span></p>
   `);
-  $('#printCreatedReport').unbind('click');
-  $('#printCreatedReport').click(function () {
+  $('.printCreatedReport').unbind('click');
+  $('.printCreatedReport').click(function () {
     PrintReport(id);
-    // GetReport(id);
   });
-  $('#printCreatedReport').text(`Print report: ${id}`);
+  $('.printCreatedReport').text(`Print report: ${id}`);
 }
 
 function openPage(pageToOpen) {
