@@ -487,6 +487,61 @@ function ShowReport(responseCode, reportId, reportData) {
   });
 }
 
+function ShowReportInTablet(responseCode, reportId, reportData) {
+  const resultsContainer = $('#report-results-container-others2');
+  resultsContainer.empty();
+  $('.printCreatedReport').unbind('click');
+
+  let report;
+  try {
+    report = JSON.parse(reportData);
+  } catch (error) {
+    $('.printCreatedReport').prop('disabled', true);
+    $('.printCreatedReport').text(`Print report: N/A`);
+    $('#report-report-id2').html(`
+      <h3>No report to show</h3>
+      <hr/>
+    `);
+    return;
+  }
+
+  $('.printCreatedReport').click(function () {
+    PrintReport(reportId);
+  });
+  $('.printCreatedReport').text(`Print report: ${reportId}`);
+  $('.printCreatedReport').prop('disabled', false);
+
+  $('#report-report-id2').html(`
+    <h3>Report ID: ${reportId}</h3>
+    <hr/>
+  `);
+  Object.keys(report).forEach((k) => {
+    const bs = report[k].info;
+    const conditionallyRenderedPart =
+      bs.matchPercent == 'PRIMARY'
+        ? `<p class="mb-1">  <span class="fw-normal">PRIMARY</span></p>`
+        : `<p class="mb-1">Match: <span class="fw-normal">${Number(bs.matchPercent).toFixed(
+            2,
+          )}</span>%</p>`;
+    resultsContainer.append(`
+      <div class='d-flex justify-content-between pt-1'>
+        <h3>Sample ID: ${bs.id}</h3>
+        <h3>${conditionallyRenderedPart}</h3>
+      </div>
+      <div>
+        <p class="fw-bold mb-0">Source: <span class="fw-normal">${bs.source}</span></p>
+        <p class="fw-bold mb-0">Quality: <span class="fw-normal">${bs.quality}</span></p>
+        <p class="fw-bold mb-0">bloodId: <span class="fw-normal roboto-mono-400">${bs.bloodId}</span></p>
+        <p class="fw-bold mb-0">BloodType: <span class="fw-normal">${bs.bloodType}</span></p>
+        <p class="fw-bold mb-0">Location: <span class="fw-normal">${bs.location}</span></p>
+        <p class="fw-bold mb-0">Date Time: <span class="fw-normal">${bs.datetime}</span></p>
+        <p class="fw-bold mb-0">Notes: <span class="fw-normal">${bs.notes}</span></p>
+      </div>
+      <hr/>
+    `);
+  });
+}
+
 function SetUpBloodSamplePage() {
   $('#mini-game-container').css('display', 'flex');
   $('#mini-game-after-create-report-container').css('display', 'none');
