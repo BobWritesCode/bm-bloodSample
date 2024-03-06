@@ -103,7 +103,11 @@ document.onreadystatechange = () => {
           break;
         case 'showReport':
           OpenUI();
-          ShowReport(e.data.responseCode, e.data.reportId, e.data.report);
+          if (e.data.inTablet) {
+            ShowReportInTablet(e.data.responseCode, e.data.reportId, e.data.report);
+          } else {
+            ShowReport(e.data.responseCode, e.data.reportId, e.data.report);
+          }
           break;
         case 'openNoteBox':
           OpenUI();
@@ -171,9 +175,12 @@ function PrintReport(id) {
   $.post('https://bm-bloodsample/printReport', JSON.stringify({ reportId: reportId }));
 }
 
-function GetReport(id) {
+function GetReport(id, inTablet) {
   const reportId = id ? id : $('#inputRetrieveReportById').val();
-  $.post('https://bm-bloodsample/getReport', JSON.stringify({ reportId: reportId }));
+  $.post(
+    'https://bm-bloodsample/getReport',
+    JSON.stringify({ reportId: reportId, inTablet: inTablet }),
+  );
 }
 
 function StartMiniGame() {
