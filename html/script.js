@@ -10,7 +10,6 @@ const PAGES = [
   'page-sample-processing',
   'page-create-report-sample-selection',
   'page-show-report',
-  'page-print-report',
   'page-sample-process-selection',
   'page-create-report-comparison',
 ];
