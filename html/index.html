@@ -31,29 +31,25 @@
       </div>
       <hr />
       <div id="page-1">
-        <h2>Welcome</h2>
         <div>
-          <p>You have <span class='intUnprocessedSample'>X</span> sample(s) unprocessed</p>
-          <p>You need to process samples before you can create a report with them.</p>
-          <button id='btnGotoSampleSelection' type="button" class="btn btn-primary" onclick='openPage("page-sample-process-selection")'>
-            Go to sample processing...
+          <h2>Welcome</h2>
+          <button id='btnGotoSampleSelection' type="button" class="btn btn-outline-light text-nowrap mb-3"
+            onclick='openPage("page-sample-process-selection")'>
+            <h4>Processing</h4>
+            <p>You need to process samples before you can create a report with them.</p>
+            <p>You have <span class='intUnprocessedSample'>X</span> sample(s) unprocessed.</p>
+          </button>
+          <button type="button" id='btnGotoReportCreatePage' class="btn btn-outline-light text-nowrap mb-3"
+            onclick='openPage("page-create-report-sample-selection")'>
+            <h4>Reporting</h4>
+            <p>Use processed samples to create a comparison report.</p>
+            <p>You have <span class='intProcessedSample'>X</span> sample(s) processed.</p>
+          </button>
+          <button type="button" class="btn btn-outline-light text-nowrap mb-3" onclick='openPage("page-show-report")'>
+            <h4>Admin</h4>
+            <p>View and print reports.</p>
           </button>
         </div>
-        <hr>
-        <div>
-          <p>You have <span class='intProcessedSample'>X</span> sample(s) processed</p>
-          <p>Use processed samples to create a comparison report.</p>
-          <button type="button" id='btnGotoReportCreatePage' class="btn btn-primary" onclick='openPage("page-create-report-sample-selection")'>
-            Create report
-          </button>
-        </div>
-        <hr>
-        <button type="button" class="btn btn-primary" onclick='openPage("page-show-report")'>
-          View report
-        </button>
-        <button type="button" class="btn btn-primary" onclick='openPage("page-print-report")'>
-          Print report
-        </button>
       </div>
       <div id='page-sample-process-selection'>
         <h2>Sample process selection</h2>

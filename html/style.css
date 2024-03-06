@@ -25,6 +25,11 @@ body,
   display: block;
 }
 
+#page-1 > div {
+  display: flex;
+  flex-direction: column;
+}
+
 #mini-game-container {
   display: flex;
 }
