@@ -53,7 +53,7 @@ RegisterNetEvent('bm-bloodEvidence:server:printReport', function(id)
   TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items
     [Config.RequiredItems.BloodSampleReport.Name],
     'add')
-    TriggerClientEvent('QBCore:Notify', source, "Report printed.", 'success')
+  TriggerClientEvent('QBCore:Notify', source, "Report printed.", 'success')
 end)
 
 local bloodSampleId = 1

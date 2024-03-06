@@ -138,7 +138,7 @@ button:visited {
 #notes {
   width: 300px;
   height: 120px;
-  overflow-y:hidden;
+  overflow-y: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -154,7 +154,7 @@ button:visited {
   font-size: 30px;
   background-color: rgb(232, 232, 232);
   color: #a11616;
-  font-family: "Reenie Beanie", cursive;
+  font-family: 'Reenie Beanie', cursive;
   font-weight: 400;
   font-style: normal;
 }
@@ -163,7 +163,7 @@ button:visited {
   /* font-size: larger; */
   font-size: 30px;
   color: #a11616;
-  font-family: "Reenie Beanie", cursive;
+  font-family: 'Reenie Beanie', cursive;
   font-weight: 400;
   font-style: normal;
 }
@@ -224,7 +224,7 @@ button:visited {
 }
 
 .reenie-beanie-regular {
-  font-family: "Reenie Beanie", cursive;
+  font-family: 'Reenie Beanie', cursive;
   font-weight: 400;
   font-style: normal;
 }

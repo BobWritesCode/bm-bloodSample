@@ -25,9 +25,9 @@ RegisterNUICallback('printReport', function(data, cb)
 end)
 
 RegisterNetEvent('bm-bloodEvidence:client:openNoteBox', function()
-    SendNUIMessage({
-      action = 'openNoteBox',
-    })
+  SendNUIMessage({
+    action = 'openNoteBox',
+  })
   SetNuiFocus(true, true)
 end)
 
@@ -54,6 +54,7 @@ RegisterNetEvent('bm-bloodEvidence:client:showReport', function(reportId)
       responseCode = responseCode,
       reportId = _data.id,
       report = _data.report,
+      inTablet = false
     })
   end, reportId)
   SetNuiFocus(true, true)
@@ -107,6 +108,7 @@ RegisterNUICallback('getReport', function(data, cb)
       responseCode = responseCode,
       reportId = _data.id,
       report = _data.report,
+      inTablet = data.inTablet
     })
   end, data.reportId)
 end)
