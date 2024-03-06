@@ -105,6 +105,36 @@ button:visited {
   font-style: normal;
 }
 
+#form-processedBloodSampleContainer,
+#form-processedBloodSampleComparisonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+#form-processedBloodSampleContainer > div,
+#form-processedBloodSampleComparisonContainer > div {
+  justify-self: center;
+  align-self: center;
+}
+
+#form-processedBloodSampleContainer button,
+#form-processedBloodSampleComparisonContainer button {
+  max-width: 500px;
+  justify-self: center;
+  align-self: center;
+}
+
+#mini-game-after-create-report-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+}
 
 #notes {
   width: 300px;

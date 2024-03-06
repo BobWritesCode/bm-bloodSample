@@ -62,26 +62,30 @@
       </div>
       <div id='page-create-report-sample-selection'>
         <h2>Create report - Sample selection</h2>
+        <hr />
         <form id="form-processedBloodSampleContainer" class="mb-3">
-          <h5>Select samples to create comparison report:</h3>
-            <div id="processedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
-            <button type="submit" class="btnProcessSelected btn btn-primary" disabled>Select highlighted
-              sample(s)</button>
+          <h3>Step 1</h3>
+          <h3 class='mb-4'>Select samples to create comparison report:</h3>
+          <div id="processedBloodSampleContainer" class="form-check flex-wrap mb-3"></div>
+          <button type="submit" class="btnProcessSelected btn btn-primary" disabled>Select highlighted
+            sample(s)</button>
         </form>
       </div>
       <div id='page-create-report-comparison'>
         <h2>Create report - Sample selection</h2>
+        <hr />
         <form id="form-processedBloodSampleComparisonContainer" class="mb-3" onsubmit="">
-          <h5>Select samples to create comparison report:</h3>
-            <div id="processedBloodSampleComparisonContainer" class="form-check flex-wrap mb-3"></div>
-            <button id='btnCreateReport' type="submit" class="btn btn-primary" disabled>Create report</button>
+          <h3>Step 2</h3>
+          <h3 class='mb-4'>Select samples to create comparison report:</h3>
+          <div id="processedBloodSampleComparisonContainer" class="form-check flex-wrap mb-3"></div>
+          <button id='btnCreateReport' type="submit" class="btn btn-primary" disabled>Create report</button>
         </form>
         <div id="mini-game-after-create-report-container" class="mb-3">
           <div id="mini-game-after-create-report"></div>
-          <button type="button" id='printCreatedReport' class="btn btn-primary">Print Report</button>
-          <button type="button" class="btn btn-primary" onclick='openPage("page-1")'>Home</button>
+          <button type="button" class="printCreatedReport btn btn-primary">Print Report</button>
         </div>
       </div>
+      <!-- SHOW REPORT PAGE -->
       <div id='page-show-report'>
         <h2>Show Report</h2>
         <form id='form-retrieveReportById' class="needs-validation mb-3" novalidate>
@@ -89,6 +93,7 @@
             <input id="inputRetrieveReportById" class="form-control me-2" type="text" placeholder="Report number"
               style='max-width:150px;' required>
             <button type="submit" class="btn btn-success me-2">Retrieve report</button>
+            <button type="button" class="printCreatedReport btn btn-primary" disabled>Print Report</button>
             <div id='form-retrieveReportByIdResponse' class="alert m-0 py-0 px-3">
             </div>
           </div>
