@@ -95,6 +95,11 @@ QBCore.Functions.CreateCallback('bm-bloodEvidence:server:GetServerTime',
     cb(data)
   end)
 
+  QBCore.Functions.CreateCallback('bm-bloodEvidence:server:GetNextID',
+  function(source, cb)
+    local id = GetNextID()
+    cb(id)
+  end)
 
 QBCore.Functions.CreateCallback('bm-bloodEvidence:server:giveProcessedSample',
   function(source, cb, slot, bloodId)
