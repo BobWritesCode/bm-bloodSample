@@ -85,8 +85,16 @@ RegisterNetEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', function(ta
   else
     TriggerClientEvent('QBCore:Notify', source, "You do not have the correct item (Panda)", 'error')
   end
-  TriggerClientEvent('bm-bloodEvidence:client:provideBloodSample', source, bloodId, bloodType)
-end)
+
+QBCore.Functions.CreateCallback('bm-bloodEvidence:server:GetServerTime',
+  function(source, cb)
+    local data = {
+      datetime = GetDateTime(),
+      time= os.time()
+    }
+    cb(data)
+  end)
+
 
 QBCore.Functions.CreateCallback('bm-bloodEvidence:server:giveProcessedSample',
   function(source, cb, slot, bloodId)
