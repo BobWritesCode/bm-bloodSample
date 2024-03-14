@@ -113,13 +113,6 @@ RegisterNUICallback('getReport', function(data, cb)
   end, data.reportId)
 end)
 
-function GetStreetName()
-  local ped = PlayerPedId()
-  local coords = GetEntityCoords(ped)
-  local streetHash, crossingHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
-  local streetName = GetStreetNameFromHashKey(streetHash)
-  return streetName
-end
 
 function GetPlayerBloodSamples()
   local Player = QBCore.Functions.GetPlayerData()
