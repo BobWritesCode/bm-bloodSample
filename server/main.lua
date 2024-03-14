@@ -101,6 +101,17 @@ QBCore.Functions.CreateCallback('bm-bloodEvidence:server:GetServerTime',
     cb(id)
   end)
 
+QBCore.Functions.CreateCallback('bm-bloodEvidence:server:PickUpBloodSplat',
+  function(source, cb, data)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if Player.Functions.AddItem(Config.RequiredItems.BloodSample.Name, 1, false, data) then
+      TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSample.Name],'add')
+      cb(true)
+      return
+    end
+    cb(false)
+  end)
+
 QBCore.Functions.CreateCallback('bm-bloodEvidence:server:giveProcessedSample',
   function(source, cb, slot, bloodId)
     local Player = QBCore.Functions.GetPlayer(source)
