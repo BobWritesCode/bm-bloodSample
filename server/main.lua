@@ -37,6 +37,10 @@ QBCore.Commands.Add(Config.Commands.GetBloodSample, "Get blood sample from close
   TriggerClientEvent('bm-bloodEvidence:client:getBloodSampleFromPlayer', source)
 end)
 
+QBCore.Commands.Add("dropblood", "Drop my own blood", {}, false, function(source)
+  TriggerClientEvent('bm-bloodEvidence:client:blooddrop:createBloodSplat', source)
+end)
+
 -- TO BE REMOVED
 QBCore.Commands.Add('bmnotes', "", {}, false, function(source)
   TriggerClientEvent('bm-bloodEvidence:client:openNoteBox', source)
