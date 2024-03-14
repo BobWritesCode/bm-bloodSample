@@ -105,7 +105,8 @@ button:visited {
 }
 
 #form-processedBloodSampleContainer,
-#form-processedBloodSampleComparisonContainer {
+#form-processedBloodSampleComparisonContainer,
+#form-unprocessedBloodSampleSelection {
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -114,13 +115,20 @@ button:visited {
 }
 
 #form-processedBloodSampleContainer > div,
-#form-processedBloodSampleComparisonContainer > div {
+#form-processedBloodSampleComparisonContainer > div,
+#form-unprocessedBloodSampleSelection > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   justify-self: center;
   align-self: center;
 }
 
 #form-processedBloodSampleContainer button,
-#form-processedBloodSampleComparisonContainer button {
+#form-processedBloodSampleComparisonContainer button,
+#form-unprocessedBloodSampleSelection button {
   max-width: 500px;
   justify-self: center;
   align-self: center;
