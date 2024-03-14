@@ -15,12 +15,15 @@ client_scripts {
   '@PolyZone/EntityZone.lua',
   '@PolyZone/CircleZone.lua',
   '@PolyZone/ComboZone.lua',
-  'client/main.lua'
+  'client/main.lua',
+  'client/blooddrop.lua',
+  'client/utils.lua'
 }
 
 server_script {
   '@oxmysql/lib/MySQL.lua',
-  'server/main.lua'
+  'server/main.lua',
+  'server/s_utils.lua'
 }
 
 ui_page 'html/index.html'
