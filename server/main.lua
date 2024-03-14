@@ -69,12 +69,11 @@ RegisterNetEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', function(ta
   local bloodType = targetPlayer.PlayerData.metadata
       ['bloodtype']   -- We will use fingerprint now, likely set up a blood system.
   if Player.Functions.RemoveItem(Config.RequiredItems.BloodSampleKit.Name, 1) then
-    local id = bloodSampleId
-    bloodSampleId = bloodSampleId + 1
-    local info = {
-      id = id,
+    local bloodSampleId = GetNextID()
+    local data = {
+      id = bloodSampleId,
       source = "Sample Kit",
-      label = "Blood sample. ID: " .. id .. ". Blood type: " .. bloodType,
+      label = "Blood sample. ID: " .. bloodSampleId .. ". Blood type: " .. bloodType,
       type = 'dna',
       bloodId = bloodId,
       bloodType = bloodType,
@@ -83,12 +82,14 @@ RegisterNetEvent('bm-bloodEvidence:server:getBloodSampleFromPlayer', function(ta
       quality = "Fresh",
       notes = notes or 'DEFAULT NOTE',
     }
-    if not Player.Functions.AddItem(Config.RequiredItems.BloodSample.Name, 1, false, info) then return end
+    if not Player.Functions.AddItem(Config.RequiredItems.BloodSample.Name, 1, false, data) then return end
     TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[Config.RequiredItems.BloodSample.Name],
       'add')
   else
     TriggerClientEvent('QBCore:Notify', source, "You do not have the correct item (Panda)", 'error')
   end
+  -- TriggerClientEvent('bm-bloodEvidence:client:provideBloodSample', source, bloodId, bloodType)
+end)
 
 QBCore.Functions.CreateCallback('bm-bloodEvidence:server:GetServerTime',
   function(source, cb)
