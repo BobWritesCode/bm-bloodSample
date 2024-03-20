@@ -2,15 +2,6 @@
 
 ## WORK IN PROGRESS - DO NOT USE
 
-Find close by player. DONE
-Take blood. DONE-ISH
-Get blood type back quickly (5-10 seconds) DONE-ISH
-Take blood sample to station WIP
-Run full DNA comp
-Get back results in a GUI
-(potential) Graph that player has to check how close of a match
-Each letter or number could represent a value.
-
 ## Items to be added to items.lua
 
 ```lua
